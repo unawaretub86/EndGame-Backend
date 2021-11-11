@@ -9,6 +9,7 @@
     "start": "ts-node index.ts"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "mongoose": "^6.0.12",
     "ts-node": "^10.4.0",
