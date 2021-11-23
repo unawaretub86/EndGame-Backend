@@ -1,20 +1,19 @@
 {
   "name": "end-game-backend",
   "version": "1.0.0",
-  "main": "index.js",
   "repository": "https://github.com/unawaretub86/EndGame-Backend.git",
-  "author": "Vivian Mejia Sanchez <vivian.mejiasanchez@gmail.com>",
-  "license": "MIT",
   "scripts": {
-    "start": "ts-node index.ts"
+    "start": "node ./bin/www"
   },
   "dependencies": {
+    "bluebird": "^3.7.2",
+    "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "^4.3.2",
     "express": "^4.17.1",
     "http-errors": "^1.8.0",
+    "mongodb": "^4.1.3",
     "mongoose": "^6.0.12",
-    "ts-node": "^10.4.0",
-    "typescript": "^4.4.4"
+    "morgan": "~1.9.1"
   }
 }

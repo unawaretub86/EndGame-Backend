@@ -1,9 +1,9 @@
-import connectDB from "./db/db";
-import { UserModel } from "./models/user";
-import { Enum_Role } from "./models/enums";
+// import connectDB from "./db/db";
+// import { UserModel } from "./models/user";
+// import { Enum_Role } from "./models/enums";
 
-const main = async () => {
-  await connectDB();
+// const main = async () => {
+//   await connectDB();
 
 //   // CREATE USER
 //   await UserModel.create({
@@ -29,5 +29,5 @@ const main = async () => {
   //     console.error('error getting users', e);
   //   });
 ////////////////////////////////////
-};
-main();
+// };
+// main();
