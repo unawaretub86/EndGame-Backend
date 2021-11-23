@@ -2,13 +2,23 @@ var createError = require("http-errors");
 var express = require("express");
 var cors = require("cors");
 var path = require("path");
+var cookieParser = require("cookie-parser");
+var logger = require("morgan");
 
 var app = express();
 
-var UserController = require('./modules/user/user.module')().UserController
+var MongoDBUtil = require("./models/mongodb/mongodb.module").MongoDBUtil;
+var UserController = require('./models/user/user.module')().UserController
+
+app.use(logger("dev"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+
+MongoDBUtil.init();
 
 app.use(cors());
-app.user("/users", UserController);
+app.use("/users", UserController);
 
 
 app.get("/", function (req, res) {
