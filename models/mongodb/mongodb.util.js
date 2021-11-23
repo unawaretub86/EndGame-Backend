@@ -7,7 +7,7 @@
 
     var mongoose = require('mongoose'); //ORM
 
-    var mongodbConfig = require('../../db/config/mongodb-config').mongodb;
+    var mongodbConfig = require('../../db/config/mongodb-config').mongodbConfig;
 
     function init() {
         var options = {
@@ -22,6 +22,7 @@
                 console.log("MongoDB connection successful. DB: " + connectionString);
             })
             .catch(function (error) {
+                console.log("mongodbConfig= "+mongodbConfig.database);
                 console.log(error.message);
                 console.log("Error occurred while connecting to DB: : " + connectionString);
             });

@@ -1,5 +1,5 @@
 {
-    "mongodb": {
+    "mongodbConfig": {
         "server": "gestionproyectosendgame.fwabc.mongodb.net",
         "database": "GestionDeProyectos",
         "user": "admin",
