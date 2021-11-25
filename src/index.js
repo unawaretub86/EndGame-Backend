@@ -4,6 +4,9 @@ import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
 import express from 'express';
 import http from 'http';
 import dotenv from 'dotenv';
+import userSchema from './modules/users/user.schema.js';
+import projectSchema from './modules/projects/project.schema.js';
+
 
 // middlewares
 import validateAccess from './middlewares/access.middlewares.js';
@@ -12,16 +15,22 @@ import validateAccess from './middlewares/access.middlewares.js';
 import connect from './database.js';
 
 // typeDefs
-import typeDefs from './schema/index.js';
+// import typeDefs from './schema/index.js';
+const typeDefs = [
+  ...userSchema,
+  ...projectSchema,
+]
 
 // resolvers
 import resolvers from './resolvers/index.js';
+
 
 // Initialization
 dotenv.config();
 connect();
 
 const startApolloServer = async (typeDefs, resolvers) => {
+  console.log("TYPEDEFS: " + typeDefs);
   const app = express();
   const httpServer = http.createServer(app);
   const server = new ApolloServer({
