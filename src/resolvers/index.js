@@ -1,18 +1,26 @@
-import userResolver from "./user.resolver.js";
-import projectResolver from "./project.resolver.js";
+import userResolver from "../modules/users/user.resolver.js";
+// import projectResolver from "./project.resolver.js";
 
-const { Query: userQueries, Mutation: userMutations, ...userRest } = userResolver;
-const { Query: projectQueries, Mutation: projectMutations, ...projectRest } = projectResolver;
+const {
+  Query: userQueries,
+  Mutation: userMutations,
+  ...userRest
+} = userResolver;
+// const {
+//   Query: projectQueries,
+//   Mutation: projectMutations,
+//   ...projectRest
+// } = projectResolver;
 
-export default{
+export default {
   Query: {
     ...userQueries,
-    ...projectQueries,
+    // ...projectQueries,
   },
   Mutation: {
     ...userMutations,
-    ...projectMutations,
+    // ...projectMutations,
   },
   ...userRest,
-  ...projectRest
+  // ...projectRest,
 };

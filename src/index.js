@@ -1,8 +1,8 @@
 // vendors
 import { ApolloServer } from "apollo-server-express";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
-import userSchema from "./modules/users/user.module.js";
-// import userSchema from "./modules/users/user.module.js";
+import userSchema from "./modules/users/user.schema.js";
+// import projectSchema from "./schema/index";
 import express from "express";
 import http from "http";
 import dotenv from "dotenv";
@@ -19,18 +19,18 @@ import connect from "./database.js";
 const typeDefs = [...userSchema];
 
 // resolvers
-// import resolvers from "./resolvers/index.js";
+import resolvers from "./resolvers/index.js";
 
-import { querysUser, mutationsUser } from "./modules/users/user.resolver.js";
+// import { querysUser, mutationsUser } from "./modules/users/user.resolver.js";
 
-const resolvers = {
-  Query: {
-    querysUser,
-  },
-  Mutation: {
-    mutationsUser,
-  },
-};
+// const resolvers = {
+//   Query: {
+//     querysUser,
+//   },
+//   Mutation: {
+//     mutationsUser,
+//   },
+// };
 
 // Initialization
 dotenv.config();
