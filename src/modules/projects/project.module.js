@@ -1,8 +1,7 @@
 //import
-import projectSchema from "./project.schema";
+import projectSchema from "./project.schema.js";
+import projectResolver from "./project.resolver.js";
 
-const init = () => {
-    projectSchema = [...projectSchema];
-};
-
-export default init;
+export default [ 
+    ...projectSchema,
+]

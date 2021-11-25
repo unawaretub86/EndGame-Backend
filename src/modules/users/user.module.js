@@ -1,8 +1,7 @@
 //import
 import userSchema from "./user.schema";
+import userResolver from "./user.resolver";
 
-const init = () => {
-  userSchema = [...userSchema];
-};
-
-export default init;
+export default [
+  ...userSchema,
+]

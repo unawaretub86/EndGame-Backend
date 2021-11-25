@@ -5,8 +5,7 @@ import express from 'express';
 import http from 'http';
 import dotenv from 'dotenv';
 import userSchema from './modules/users/user.schema.js';
-import projectSchema from './modules/projects/project.schema.js';
-
+import projectSchema from './modules/projects/project.module.js';
 
 // middlewares
 import validateAccess from './middlewares/access.middlewares.js';
