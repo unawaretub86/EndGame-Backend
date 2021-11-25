@@ -21,11 +21,11 @@ const usersSchema = new Schema({
   },
   role: {
     type: String,
-    enum: ['ADMIN', 'LEADER', 'STUDENT']
+    enum: ['admin', 'leader', 'student']
   },
   status: {
     type: String,
-    enum: ['PENDING', 'AUTHORIZED', 'UNAUTHORIZED']
+    enum: ['pending', 'authorized', 'unauthorized']
   },
   password: {
     type: String,

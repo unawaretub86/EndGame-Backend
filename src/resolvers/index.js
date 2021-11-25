@@ -1,5 +1,5 @@
-import userResolver from "./user.resolver.js";
-import projectResolver from "./project.resolver.js";
+import userResolver from "../modules/users/user.resolver.js";
+import projectResolver from "../modules/projects/project.resolver.js";
 
 const { Query: userQueries, Mutation: userMutations, ...userRest } = userResolver;
 const { Query: projectQueries, Mutation: projectMutations, ...projectRest } = projectResolver;

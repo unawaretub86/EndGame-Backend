@@ -20,15 +20,15 @@ const projectType = gql`
 const enums = gql`
   # Enum for status values
   enum projectStatus {
-    ACTIVE
-    INACTIVE
+    active
+    inactive
   }
 
   # Enum for phase values
   enum Phase {
-    STARTED
-    IN_PROGRESS
-    ENDED
+    started
+    in progress
+    ended
   }
 `;
 

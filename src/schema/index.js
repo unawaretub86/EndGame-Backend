@@ -1,5 +1,5 @@
-import userSchema from "./user.schema.js";
-import projectSchema from "./project.schema.js";
+import userSchema from "../modules/users/user.schema.js";
+import projectSchema from "../modules/projects/project.schema.js";
 
 export default [
   ...userSchema,

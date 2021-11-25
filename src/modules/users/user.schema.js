@@ -17,16 +17,16 @@ const userType = gql`
 const enums = gql`
   # Enum for role values
   enum Role {
-    ADMIN
-    LEADER
-    STUDENT
+    admin
+    leader
+    student
   }
 
   # Enum for status values
   enum userStatus {
-    PENDING
-    AUTHORIZED
-    UNAUTHORIZED
+    pending
+    authorized
+    unauthorized
   }
 `;
 

@@ -1,4 +1,4 @@
-import Projects from "../../models/projects.model.js";
+import Projects from "./project.model.js";
 import Users from "../users/user.model.js";
 
 const allProjects = async () => {
