@@ -1,5 +1,5 @@
 //import
-import userSchema from "./user.schema";
+import userSchema from "./user.schema.js";
 
 const init = () => {
   userSchema = [...userSchema];

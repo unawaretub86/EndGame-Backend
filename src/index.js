@@ -1,21 +1,36 @@
 // vendors
-import { ApolloServer } from 'apollo-server-express';
-import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
-import express from 'express';
-import http from 'http';
-import dotenv from 'dotenv';
+import { ApolloServer } from "apollo-server-express";
+import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
+import userSchema from "./modules/users/user.module.js";
+// import userSchema from "./modules/users/user.module.js";
+import express from "express";
+import http from "http";
+import dotenv from "dotenv";
 
 // middlewares
-import validateAccess from './middlewares/access.middlewares.js';
+import validateAccess from "./middlewares/access.middlewares.js";
 
 // utilities
-import connect from './database.js';
+import connect from "./database.js";
 
 // typeDefs
-import typeDefs from './schema/index.js';
+// import typeDefs from './schema/index.js';
+
+const typeDefs = [...userSchema];
 
 // resolvers
-import resolvers from './resolvers/index.js';
+// import resolvers from "./resolvers/index.js";
+
+import { querysUser, mutationsUser } from "./modules/users/user.resolver.js";
+
+const resolvers = {
+  Query: {
+    querysUser,
+  },
+  Mutation: {
+    mutationsUser,
+  },
+};
 
 // Initialization
 dotenv.config();
@@ -30,9 +45,14 @@ const startApolloServer = async (typeDefs, resolvers) => {
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
   await server.start();
-  server.applyMiddleware({ app });
-  await new Promise(resolve => httpServer.listen({ port: process.env.PORT }, resolve));
-  console.log(`🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`);
+  // server.applyMiddleware({ app });
+  app.use(server.getMiddleware());
+  await new Promise((resolve) =>
+    httpServer.listen({ port: process.env.PORT }, resolve)
+  );
+  console.log(
+    `🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`
+  );
 };
 
 startApolloServer(typeDefs, resolvers);
