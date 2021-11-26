@@ -18,6 +18,11 @@
     "nodemon": "^2.0.15"
   },
   "engines": {
+<<<<<<< HEAD
     "node": "16.x"
+=======
+    "node": "16.x",
+    "yarn": "1.x"
+>>>>>>> development
   }
 }
