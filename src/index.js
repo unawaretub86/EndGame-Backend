@@ -2,6 +2,7 @@
 import { ApolloServer } from 'apollo-server-express';
 import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
 import express from 'express';
+import cors from 'cors';
 import http from 'http';
 import dotenv from 'dotenv';
 import userSchema from './modules/users/user.schema.js';
@@ -39,6 +40,7 @@ const startApolloServer = async (typeDefs, resolvers) => {
   });
   await server.start();
   // server.applyMiddleware({ app });
+  app.use(cors());
   app.use(server.getMiddleware());
   await new Promise(resolve => httpServer.listen({ port: process.env.PORT }, resolve));
   console.log(`🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`);
