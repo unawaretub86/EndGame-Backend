@@ -16,5 +16,8 @@
     "graphql": "^16.0.1",
     "mongoose": "^6.0.13",
     "nodemon": "^2.0.15"
+  },
+  "engines": {
+    "node": "16.x"
   }
 }
