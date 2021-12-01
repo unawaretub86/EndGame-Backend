@@ -23,5 +23,5 @@ export default {
   },
   Project: {
     leader,
-  }
+  },
 };

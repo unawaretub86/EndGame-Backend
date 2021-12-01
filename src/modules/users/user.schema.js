@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server';
+import { gql } from "apollo-server";
 
 const userType = gql`
   # User
@@ -8,9 +8,8 @@ const userType = gql`
     documentId: Float!
     name: String!
     lastName: String!
-    fullName: String!
     role: Role!
-    status: userStatus!
+    password: String!
   }
 `;
 
@@ -37,13 +36,17 @@ const queries = gql`
   }
 
   type Query {
-    user(role: Role): User
+    Role(role: Role): User
+  }
+
+  type Query {
+    user(_id: ID!): User
   }
 `;
 
 const mutations = gql`
   type Mutation {
-    addUser(input: AddUserInput!): User
+    addUser(input: AddUserInput!): User!
   }
 `;
 
@@ -53,17 +56,9 @@ const inputs = gql`
     documentId: Float!
     name: String!
     lastName: String!
-    fullName: String!
     role: Role!
-    status: userStatus!
     password: String!
   }
 `;
 
-export default [
-  userType,
-  enums,
-  queries,
-  mutations,
-  inputs,
-];
+export default [userType, enums, queries, mutations, inputs];
