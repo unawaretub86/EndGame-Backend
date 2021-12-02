@@ -61,6 +61,7 @@ const inputs = gql`
     endDate: String!
     status: projectStatus!
     phase: Phase
+    leader_id: ID!
   }
 `;
 

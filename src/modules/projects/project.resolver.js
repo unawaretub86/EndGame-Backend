@@ -6,6 +6,12 @@ const allProjects = async () => {
   return projects;
 };
 
+const addProject = async (parent, args, context, info) => {
+  let project = new Projects(args.input);
+  project = await project.save();
+  return project;
+};
+
 const project = async (parent, args, context, info) => {
   const user = await Projects.findById(args._id);
   return user;
@@ -23,5 +29,8 @@ export default {
   },
   Project: {
     leader,
+  },
+  Mutation: {
+    addProject,
   },
 };

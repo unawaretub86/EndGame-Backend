@@ -14,14 +14,21 @@ const addUser = async (parent, args, context, info) => {
   let user = new Users(args.input);
   user = await user.save();
   return user;
-}
+};
+
+const updateUser = async (parent, args, context, info) => {
+  let user = Users.findById(args._id);
+  user = await user.updateOne(args.input);
+  return user;
+};
 
 export default {
   Query: {
     allUsers,
-    user
+    user,
   },
   Mutation: {
     addUser,
-  }
-}
+    updateUser,
+  },
+};
