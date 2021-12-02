@@ -7,8 +7,8 @@ const userType = gql`
     email: String!
     documentId: Float!
     name: String!
-    status: userStatus!
     lastName: String!
+    status: userStatus!
     role: Role!
     password: String!
   }
@@ -37,11 +37,15 @@ const queries = gql`
   }
 
   type Query {
-    Role(role: Role): User
+    userById(_id: ID!): User
   }
 
   type Query {
-    user(_id: ID!): User
+    usersByRole(role: Role!): [User]
+  }
+
+  type Query {
+    userByStatus(status: userStatus!): [User]
   }
 `;
 
