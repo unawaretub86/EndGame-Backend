@@ -37,7 +37,11 @@ const queries = gql`
   }
 
   type Query {
-    Role(role: Role): User
+    Role(role: Role!): [User]
+  }
+
+  type Query {
+    userByStatus(status: userStatus!): User
   }
 
   type Query {
