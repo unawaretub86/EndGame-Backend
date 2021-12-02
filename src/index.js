@@ -5,8 +5,16 @@ import express from "express";
 import cors from "cors";
 import http from "http";
 import dotenv from "dotenv";
-import userSchema from "./modules/users/user.schema.js";
-import projectSchema from "./modules/projects/project.module.js";
+
+// Schemas
+import  { userSchema }  from "./modules/users/user.module.js";
+import { projectSchema } from "./modules/projects/project.module.js";
+import { enrollmentSchema } from "./modules/enrollments/enrollment.module.js";
+
+// resolvers
+import { projectResolver } from "./modules/projects/project.module.js";
+import { userResolver } from "./modules/users/user.module.js";
+import { enrollmentResolver } from "./modules/enrollments/enrollment.module.js"
 
 // middlewares
 import validateAccess from "./middlewares/access.middlewares.js";
@@ -14,16 +22,9 @@ import validateAccess from "./middlewares/access.middlewares.js";
 // utilities
 import connect from "./database.js";
 
-// typeDefs
-// import typeDefs from './schema/index.js';
-const typeDefs = [...userSchema, ...projectSchema];
 
-// resolvers
-// import resolvers from "./resolvers/index.js";
-import projectResolvers from "./modules/projects/project.resolver.js";
-import usersResolvers from "./modules/users/user.resolver.js";
-
-const resolvers = [projectResolvers, usersResolvers];
+const typeDefs = [userSchema, projectSchema, enrollmentSchema];
+const resolvers = [projectResolver, userResolver, enrollmentResolver];
 
 // Initialization
 dotenv.config();
