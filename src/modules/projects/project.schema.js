@@ -1,9 +1,9 @@
-import { gql } from 'apollo-server';
+import { gql } from "apollo-server";
 
 const projectType = gql`
   # Project
   type Project {
-    _id: ID!,
+    _id: ID!
     name: String!
     generalObjective: String!
     specificObjectives: [String]!
@@ -27,7 +27,8 @@ const enums = gql`
   # Enum for phase values
   enum Phase {
     started
-    in progress
+    in
+    progress
     ended
   }
 `;
@@ -43,8 +44,24 @@ const queries = gql`
   }
 `;
 
-export default [
-  projectType,
-  enums,
-  queries
-];
+const mutations = gql`
+  type Mutation {
+    addProject(input: AddProjectInput!): Project!
+  }
+`;
+
+const inputs = gql`
+  input AddProjectInput {
+    _id: ID!
+    name: String!
+    generalObjective: String!
+    specificObjectives: [String]!
+    budget: Float!
+    startDate: String!
+    endDate: String!
+    status: projectStatus!
+    phase: Phase
+  }
+`;
+
+export default [projectType, enums, queries, mutations, inputs];

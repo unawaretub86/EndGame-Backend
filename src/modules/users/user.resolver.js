@@ -5,7 +5,7 @@ const allUsers = async (parent, args, context, info) => {
   return users;
 };
 
-const user = async (parent, args, context, info) => {
+const userById = async (parent, args, context, info) => {
   const user = await Users.findById(args._id);
   return user;
 };
@@ -16,10 +16,22 @@ const addUser = async (parent, args, context, info) => {
   return user;
 }
 
+const usersByRole = async(parent, args, context, info) => {
+  const users = await Users.find({ role: args.role });
+  return users;
+}
+
+const userByStatus = async(parent, args, context, info) => {
+  const users = await Users.find({ status: args.status });
+  return users;
+}
+
 export default {
   Query: {
     allUsers,
-    user
+    userById,
+    usersByRole,
+    userByStatus
   },
   Mutation: {
     addUser,
