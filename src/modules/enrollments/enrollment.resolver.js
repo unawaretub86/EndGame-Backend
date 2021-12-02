@@ -1,7 +1,7 @@
 // models
-import Enrollments from '../models/enrollments.model.js';
-import Projects from '../projects/projects.model.js';
-import Users from '../users/users.model.js';
+import Enrollments from './enrollment.model.js';
+import Projects from '../projects/project.model.js';
+import Users from '../users/user.model.js';
 
 const allEnrollments = async () => {
   const enrollments = await Enrollments.find();
@@ -19,11 +19,11 @@ const student = async (parent) => {
 };
 
 export default {
-  enrollmentQueries: {
-    allEnrollments
-  },
-  Enrollment: {
-    project,
-    student,
-  }
+    Query: {
+        allEnrollments
+    },
+    Enrollment: {
+        project,
+        student,
+    }
 }

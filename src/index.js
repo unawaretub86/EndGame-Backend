@@ -9,10 +9,12 @@ import dotenv from "dotenv";
 // Schemas
 import  { userSchema }  from "./modules/users/user.module.js";
 import { projectSchema } from "./modules/projects/project.module.js";
+import { enrollmentSchema } from "./modules/enrollments/enrollment.module.js";
 
 // resolvers
 import { projectResolver } from "./modules/projects/project.module.js";
 import { userResolver } from "./modules/users/user.module.js";
+import { enrollmentResolver } from "./modules/enrollments/enrollment.module.js"
 
 // middlewares
 import validateAccess from "./middlewares/access.middlewares.js";
@@ -21,8 +23,8 @@ import validateAccess from "./middlewares/access.middlewares.js";
 import connect from "./database.js";
 
 
-const typeDefs = [userSchema, projectSchema];
-const resolvers = [projectResolver, userResolver];
+const typeDefs = [userSchema, projectSchema, enrollmentSchema];
+const resolvers = [projectResolver, userResolver, enrollmentResolver];
 
 // Initialization
 dotenv.config();
