@@ -7,6 +7,7 @@ const userType = gql`
     email: String!
     documentId: Float!
     name: String!
+    status: userStatus!
     lastName: String!
     role: Role!
     password: String!
@@ -56,6 +57,8 @@ const inputs = gql`
     documentId: Float!
     name: String!
     lastName: String!
+    fullName: String!
+    status: userStatus!
     role: Role!
     password: String!
   }
