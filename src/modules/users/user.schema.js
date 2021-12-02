@@ -37,15 +37,15 @@ const queries = gql`
   }
 
   type Query {
-    Role(role: Role): User
+    userById(_id: ID!): User
   }
 
   type Query {
-    userByStatus(status: userStatus!): User
+    usersByRole(role: Role!): [User]
   }
 
   type Query {
-    user(_id: ID!): User
+    userByStatus(status: userStatus!): [User]
   }
 `;
 
