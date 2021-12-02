@@ -1,7 +1,7 @@
 // models
-import Enrollments from './enrollment.model.js';
-import Projects from '../projects/project.model.js';
-import Users from '../users/user.model.js';
+import {Enrollments} from './enrollment.module.js';
+import {Projects} from '../projects/project.module.js';
+import {Users} from '../users/user.module.js';
 
 const allEnrollments = async () => {
   const enrollments = await Enrollments.find();

@@ -1,4 +1,4 @@
-import Users from "./user.model.js";
+import {Users} from "./user.module.js";
 
 const allUsers = async (parent, args, context, info) => {
   const users = await Users.find();

@@ -1,5 +1,5 @@
-import Projects from "./project.model.js";
-import Users from "../users/user.model.js";
+import {Projects} from "./project.module.js";
+import {Users} from "../users/user.module.js";
 
 const allProjects = async () => {
   const projects = await Projects.find();
