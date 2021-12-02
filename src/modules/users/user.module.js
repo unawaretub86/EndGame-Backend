@@ -1,7 +1,8 @@
 //import
-import userSchema from "./user.schema";
-import userResolver from "./user.resolver";
+import userSchema from "./user.schema.js";
+import userResolver from "./user.resolver.js";
 
-export default [
-  ...userSchema,
-]
+export {
+  userSchema,
+  userResolver
+}
