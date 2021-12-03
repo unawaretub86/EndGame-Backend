@@ -48,7 +48,7 @@ const queries = gql`
   }
 
   type Query {
-    projectByStatus(status: projectStatus!): [Project]
+    projectByStatus(status: userStatus!): [Project]
   }
 `;
 
