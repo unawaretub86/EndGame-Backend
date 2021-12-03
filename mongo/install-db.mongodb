@@ -133,7 +133,7 @@ db.createCollection(collection, {
           bsonType: 'array'
         },
         budget: {
-          bsonType: 'decimal'
+          bsonType: 'number'
         },
         startDate: {
           bsonType: 'date'
@@ -160,7 +160,7 @@ const projects = [
     "name": "Project 1",
     "generalObjective": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris.",
     "specificObjectives": ["Lorem ipsum dolor sit amet, consectetur adipiscing elit", "Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris."],
-    "budget": Decimal128('20000000'),
+    "budget": Long('20000000'),
     "startDate": new Date(),
     "endDate": new Date(new Date().getTime() + 60*24*60*60000),
     "leader_id": db.users.findOne({email: 'walter.white@mail.com'})._id,
@@ -170,7 +170,7 @@ const projects = [
     "name": "Project 2",
     "generalObjective": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris.",
     "specificObjectives": ["Lorem ipsum dolor sit amet, consectetur adipiscing elit", "Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris."],
-    "budget": Decimal128('10000000'),
+    "budget": Long('10000000'),
     "startDate": new Date(),
     "endDate": new Date(new Date().getTime() + 60*24*60*60000),
     "leader_id": db.users.findOne({email: 'walter.white@mail.com'})._id,
@@ -180,7 +180,7 @@ const projects = [
     "name": "Project 3",
     "generalObjective": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris.",
     "specificObjectives": ["Lorem ipsum dolor sit amet, consectetur adipiscing elit", "Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris."],
-    "budget": Decimal128('15000000'),
+    "budget": Long('15000000'),
     "startDate": new Date(),
     "endDate": new Date(new Date().getTime() + 60*24*60*60000),
     "leader_id": db.users.findOne({email: 'john.snow@mail.com'})._id,
@@ -190,7 +190,7 @@ const projects = [
     "name": "Project 4",
     "generalObjective": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris.",
     "specificObjectives": ["Lorem ipsum dolor sit amet, consectetur adipiscing elit", "Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris."],
-    "budget": Decimal128('35000000'),
+    "budget": Long('35000000'),
     "startDate": new Date(),
     "endDate": new Date(new Date().getTime() + 60*24*60*60000),
     "leader_id": db.users.findOne({email: 'john.snow@mail.com'})._id,
