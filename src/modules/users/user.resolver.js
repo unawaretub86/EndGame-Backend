@@ -17,8 +17,13 @@ const addUser = async (parent, args) => {
 };
 
 const updateUser = async (parent, args) => {
-  let user = Users.findById(args._id);
-  user = await user.updateOne(args.input);
+  let user = await Users.findOneAndUpdate(
+    { _id: args.input.userById },
+    { $set: { user: args.input } },
+    { new: true }
+  );
+  console.log(updateUser);
+  console.log(`${user} es el user traido de bd`);
   return user;
 };
 

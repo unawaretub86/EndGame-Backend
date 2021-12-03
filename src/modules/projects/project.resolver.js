@@ -13,8 +13,19 @@ const addProject = async (parent, args) => {
 };
 
 const project = async (parent, args) => {
-  const user = await Projects.findById(args._id);
-  return user;
+  const project = await Projects.findById(args._id);
+  return project;
+};
+
+const updateProject = async (parent, args) => {
+  const projectUpdated = await Projects.findOneAndUpdate(
+    { _id: args.input._id },
+    { $set: { updateProject: args.input.name } },
+    { new: true }
+  );
+  console.log(args.input);
+  console.log(`${projectUpdated} es`);
+  return projectUpdated;
 };
 
 const leader = async (parent) => {
@@ -32,5 +43,6 @@ export default {
   },
   Mutation: {
     addProject,
+    updateProject,
   },
 };

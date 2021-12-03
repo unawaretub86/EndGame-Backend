@@ -48,11 +48,13 @@ const mutations = gql`
   type Mutation {
     addProject(input: AddProjectInput!): Project!
   }
+  type Mutation {
+    updateProject(input: UpdateProjectInput!): Project!
+  }
 `;
 
 const inputs = gql`
   input AddProjectInput {
-    _id: ID!
     name: String!
     generalObjective: String!
     specificObjectives: [String]!
@@ -62,6 +64,18 @@ const inputs = gql`
     status: projectStatus!
     phase: Phase
     leader_id: ID!
+  }
+
+  input UpdateProjectInput {
+    _id: ID!
+    name: String!
+    generalObjective: String
+    specificObjectives: [String]
+    budget: Float
+    startDate: String
+    endDate: String
+    status: projectStatus
+    phase: Phase
   }
 `;
 

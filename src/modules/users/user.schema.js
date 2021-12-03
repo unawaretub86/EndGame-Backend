@@ -71,7 +71,7 @@ const inputs = gql`
     password: String!
   }
   input updateUserInput {
-    _id: ID!
+    userById: ID!
     email: String!
     documentId: Float!
     name: String!
