@@ -12,19 +12,26 @@ const addProject = async (parent, args) => {
   return project;
 };
 
-const project = async (parent, args) => {
+const projectById = async (parent, args) => {
   const project = await Projects.findById(args._id);
   return project;
 };
 
 const updateProject = async (parent, args) => {
   const projectUpdated = await Projects.findOneAndUpdate(
-    { _id: args.input._id },
-    { $set: { updateProject: args.input.name } },
+    { _id: args.input.projectById },
+    {
+      name: args.input.name,
+      generalObjective: args.input.generalObjective,
+      specificObjectives: args.input.specificObjectives,
+      budget: args.input.budget,
+      startDate: args.input.startDate,
+      endDate: args.input.endDate,
+      status: args.input.status,
+      phase: args.input.phase,
+    },
     { new: true }
   );
-  console.log(args.input);
-  console.log(`${projectUpdated} es`);
   return projectUpdated;
 };
 
@@ -36,7 +43,7 @@ const leader = async (parent) => {
 export default {
   Query: {
     allProjects,
-    project,
+    projectById,
   },
   Project: {
     leader,

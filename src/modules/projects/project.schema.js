@@ -40,7 +40,7 @@ const queries = gql`
   }
 
   type Query {
-    project(_id: ID): Project
+    projectById(_id: ID): Project
   }
 `;
 
@@ -67,7 +67,7 @@ const inputs = gql`
   }
 
   input UpdateProjectInput {
-    _id: ID!
+    projectById: ID!
     name: String!
     generalObjective: String
     specificObjectives: [String]

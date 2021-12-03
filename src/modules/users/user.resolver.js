@@ -17,14 +17,19 @@ const addUser = async (parent, args) => {
 };
 
 const updateUser = async (parent, args) => {
-  let user = await Users.findOneAndUpdate(
+  let userUpdated = await Users.findOneAndUpdate(
     { _id: args.input.userById },
-    { $set: { user: args.input } },
+    {
+      name: args.input.name,
+      email: args.input.email,
+      documentId: args.input.documentId,
+      lastName: args.input.lastName,
+      password: args.input.password,
+      fullName: args.input.fullName,
+    },
     { new: true }
   );
-  console.log(updateUser);
-  console.log(`${user} es el user traido de bd`);
-  return user;
+  return userUpdated;
 };
 
 const usersByRole = async (parent, args) => {

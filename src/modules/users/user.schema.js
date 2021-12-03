@@ -72,12 +72,12 @@ const inputs = gql`
   }
   input updateUserInput {
     userById: ID!
-    email: String!
-    documentId: Float!
-    name: String!
-    lastName: String!
-    fullName: String!
-    password: String!
+    email: String
+    documentId: Float
+    name: String
+    lastName: String
+    fullName: String
+    password: String
   }
 `;
 
