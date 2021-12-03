@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server';
+import { gql } from "apollo-server";
 
 const userType = gql`
   # User
@@ -8,9 +8,9 @@ const userType = gql`
     documentId: Float!
     name: String!
     lastName: String!
-    fullName: String!
-    role: Role!
     status: userStatus!
+    role: Role!
+    password: String!
   }
 `;
 
@@ -28,6 +28,11 @@ const enums = gql`
     authorized
     unauthorized
   }
+
+  enum userStatusByLeader {
+    pending
+    authorized
+  }
 `;
 
 const queries = gql`
@@ -37,13 +42,33 @@ const queries = gql`
   }
 
   type Query {
-    user(role: Role): User
+    userById(_id: ID!): User
+  }
+
+  type Query {
+    usersByRole(role: Role!): [User]
+  }
+
+  type Query {
+    userByStatus(status: userStatus!): [User]
   }
 `;
 
 const mutations = gql`
   type Mutation {
-    addUser(input: AddUserInput!): User
+    addUser(input: AddUserInput!): User!
+  }
+
+  type Mutation {
+    updateUser(input: UpdateUserInput!): User!
+  }
+
+  type Mutation {
+    updateStateAdmin(input: UpdateStateAdminInput!): User!
+  }
+
+  type Mutation {
+    updateStateLeader(input: UpdateStateLeaderInput!): User!
   }
 `;
 
@@ -54,16 +79,28 @@ const inputs = gql`
     name: String!
     lastName: String!
     fullName: String!
-    role: Role!
     status: userStatus!
+    role: Role!
     password: String!
+  }
+  input UpdateUserInput {
+    userById: ID!
+    email: String
+    documentId: Float
+    name: String
+    lastName: String
+    fullName: String
+    password: String
+  }
+  input UpdateStateAdminInput {
+    userById: ID!
+    status: userStatus!
+  }
+
+  input UpdateStateLeaderInput {
+    userById: ID!
+    status: userStatusByLeader!
   }
 `;
 
-export default [
-  userType,
-  enums,
-  queries,
-  mutations,
-  inputs,
-];
+export default [userType, enums, queries, mutations, inputs];
