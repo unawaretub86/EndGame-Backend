@@ -55,7 +55,7 @@ const mutations = gql`
   }
 
   type Mutation {
-    updateUser(input: updateUserInput!): User!
+    updateUser(input: UpdateUserInput!): User!
   }
 `;
 
@@ -70,7 +70,7 @@ const inputs = gql`
     role: Role!
     password: String!
   }
-  input updateUserInput {
+  input UpdateUserInput {
     userById: ID!
     email: String
     documentId: Float

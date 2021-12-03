@@ -68,7 +68,7 @@ const inputs = gql`
 
   input UpdateProjectInput {
     projectById: ID!
-    name: String!
+    name: String
     generalObjective: String
     specificObjectives: [String]
     budget: Float

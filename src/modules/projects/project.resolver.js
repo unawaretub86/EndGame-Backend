@@ -17,6 +17,7 @@ const projectById = async (parent, args) => {
   return project;
 };
 
+//falta arreglar los datos date , revisar sandbox
 const updateProject = async (parent, args) => {
   const projectUpdated = await Projects.findOneAndUpdate(
     { _id: args.input.projectById },
@@ -25,8 +26,8 @@ const updateProject = async (parent, args) => {
       generalObjective: args.input.generalObjective,
       specificObjectives: args.input.specificObjectives,
       budget: args.input.budget,
-      startDate: args.input.startDate,
-      endDate: args.input.endDate,
+      // startDate: args.input.startDate,
+      // endDate: args.input.endDate,
       status: args.input.status,
       phase: args.input.phase,
     },
