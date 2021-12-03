@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // models
 import {Enrollments} from './enrollment.module.js';
 import {Projects} from '../projects/project.module.js';
