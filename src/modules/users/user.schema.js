@@ -28,6 +28,11 @@ const enums = gql`
     authorized
     unauthorized
   }
+
+  enum userStatusByLeader {
+    pending
+    authorized
+  }
 `;
 
 const queries = gql`
@@ -57,6 +62,14 @@ const mutations = gql`
   type Mutation {
     updateUser(input: UpdateUserInput!): User!
   }
+
+  type Mutation {
+    updateStateAdmin(input: UpdateStateAdminInput!): User!
+  }
+
+  type Mutation {
+    updateStateLeader(input: UpdateStateLeaderInput!): User!
+  }
 `;
 
 const inputs = gql`
@@ -78,6 +91,15 @@ const inputs = gql`
     lastName: String
     fullName: String
     password: String
+  }
+  input UpdateStateAdminInput {
+    userById: ID!
+    status: userStatus!
+  }
+
+  input UpdateStateLeaderInput {
+    userById: ID!
+    status: userStatusByLeader!
   }
 `;
 

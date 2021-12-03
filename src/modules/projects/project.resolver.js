@@ -41,10 +41,23 @@ const leader = async (parent) => {
   return user;
 };
 
+const projectByPhase = async (parent, args) => {
+  const projects = await Projects.find({ status: args.phase });
+  console.log(args.phase);
+  return projects;
+};
+
+const projectByStatus = async (parent, args) => {
+  const project = await Projects.find({ status: args.status });
+  return project;
+};
+
 export default {
   Query: {
     allProjects,
     projectById,
+    projectByStatus,
+    projectByPhase,
   },
   Project: {
     leader,

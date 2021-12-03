@@ -10,6 +10,7 @@ const userById = async (parent, args) => {
   return user;
 };
 
+// Mutations
 const addUser = async (parent, args) => {
   let user = new Users(args.input);
   user = await user.save();
@@ -32,6 +33,28 @@ const updateUser = async (parent, args) => {
   return userUpdated;
 };
 
+const updateStateAdmin = async (parent, args) => {
+  let userUpdatedByAdmin = await Users.findOneAndUpdate(
+    { _id: args.input.userById },
+    {
+      status: args.input.status,
+    },
+    { new: true }
+  );
+  return userUpdatedByAdmin;
+};
+
+const updateStateLeader = async (parent, args) => {
+  let userUpdatedByLeader = await Users.findOneAndUpdate(
+    { _id: args.input.userById },
+    {
+      status: args.input.status,
+    },
+    { new: true }
+  );
+  return userUpdatedByLeader;
+};
+
 const usersByRole = async (parent, args) => {
   const users = await Users.find({ role: args.role });
   return users;
@@ -52,5 +75,7 @@ export default {
   Mutation: {
     addUser,
     updateUser,
+    updateStateAdmin,
+    updateStateLeader,
   },
 };

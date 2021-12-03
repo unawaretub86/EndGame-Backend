@@ -42,6 +42,14 @@ const queries = gql`
   type Query {
     projectById(_id: ID): Project
   }
+
+  type Query {
+    projectByPhase(phase: Phase!): [Project]
+  }
+
+  type Query {
+    projectByStatus(status: projectStatus!): [Project]
+  }
 `;
 
 const mutations = gql`
