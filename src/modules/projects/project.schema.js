@@ -27,8 +27,7 @@ const enums = gql`
   # Enum for phase values
   enum Phase {
     started
-    in
-    progress
+    inProgress
     ended
   }
 `;
@@ -48,7 +47,7 @@ const queries = gql`
   }
 
   type Query {
-    projectByStatus(status: userStatus!): [Project]
+    projectByStatus(status: projectStatus!): [Project]
   }
 `;
 
