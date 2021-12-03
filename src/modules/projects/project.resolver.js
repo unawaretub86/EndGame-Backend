@@ -17,7 +17,7 @@ const projectById = async (parent, args) => {
   return project;
 };
 
-//falta arreglar los datos date , revisar sandbox
+//pending solve issue date in sandbox
 const updateProject = async (parent, args) => {
   const projectUpdated = await Projects.findOneAndUpdate(
     { _id: args.input.projectById },
