@@ -59,7 +59,7 @@ const queries = gql`
 
 const mutations = gql`
   type Mutation {
-    registerUser(input: registerUserInput!): User!
+    registerUser(input: RegisterInput!): User!
   }
 
   type Mutation {
@@ -76,14 +76,15 @@ const mutations = gql`
 `;
 
 const inputs = gql`
-  input registerUserInput {
-    email: String
-    documentId: String
-    name: String
-    lastName: String
-    role: Role
-    password: String
+  input RegisterInput {
+    email: String!
+    documentId: String!
+    name: String!
+    lastName: String!
+    role: Role!
+    password: String!
   }
+
   input UpdateUserInput {
     userById: ID!
     email: String
@@ -92,6 +93,7 @@ const inputs = gql`
     lastName: String
     password: String
   }
+
   input UpdateStateAdminInput {
     userById: ID!
     status: userStatus!
