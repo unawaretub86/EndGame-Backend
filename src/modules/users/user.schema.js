@@ -5,12 +5,11 @@ const userType = gql`
   type User {
     _id: ID!
     email: String!
-    documentId: Float!
+    documentId: String!
     name: String!
     lastName: String!
     status: userStatus!
     role: Role!
-    password: String!
   }
 `;
 
@@ -52,11 +51,15 @@ const queries = gql`
   type Query {
     userByStatus(status: userStatus!): [User]
   }
+
+  type Query {
+    login(email: String!, password: String!): String!
+  }
 `;
 
 const mutations = gql`
   type Mutation {
-    addUser(input: AddUserInput!): User!
+    registerUser(input: RegisterInput!): User!
   }
 
   type Mutation {
@@ -73,25 +76,24 @@ const mutations = gql`
 `;
 
 const inputs = gql`
-  input AddUserInput {
+  input RegisterInput {
     email: String!
-    documentId: Float!
+    documentId: String!
     name: String!
     lastName: String!
-    fullName: String!
-    status: userStatus!
     role: Role!
     password: String!
   }
+
   input UpdateUserInput {
     userById: ID!
     email: String
-    documentId: Float
+    documentId: String
     name: String
     lastName: String
-    fullName: String
     password: String
   }
+
   input UpdateStateAdminInput {
     userById: ID!
     status: userStatus!
