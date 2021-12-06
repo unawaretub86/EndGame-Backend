@@ -1,11 +1,15 @@
 import { Users } from "./user.module.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { USER_STATUS } from "./user.constans.js";
+import { USER_STATUS, ROLES } from "./user.constans.js";
 
 const allUsers = async (parent, args, { user, errorMessage }) => {
   if (!user) {
-    throw new Error(errorMessage);
+    console.log(user);
+    throw new Error(`${errorMessage} error de entrada`);
+  }
+  if (user.role !== ROLES.admin) {
+    throw new Error("Access denied");
   }
   return await Users.find();
 };
