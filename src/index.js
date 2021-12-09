@@ -19,6 +19,7 @@ import { enrollmentResolver } from "./modules/enrollments/enrollment.module.js";
 import { advanceResolver } from "./modules/advances/advance.module.js";
 
 // middlewares
+// eslint-disable-next-line no-undef
 import validateAuthentication from "./middlewares/access.middlewares.js";
 
 // utilities
@@ -40,17 +41,22 @@ const startApolloServer = async (typeDefs, resolvers) => {
   const app = express();
   const httpServer = http.createServer(app);
   const server = new ApolloServer({
+    playground:true,
     typeDefs,
     resolvers,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-    // context: async ({ req }) => await validateAuthentication(req),
+    // context: async ({ req }) => await validateAuthentication(req), Descomentar cuando se requiera acceso por token
   });
   await server.start();
-  server.applyMiddleware({ app });
+  server.applyMiddleware({
+    app,
+    path: `${server.graphqlPath}`,
+    playgroundPath: `${server.graphqlPath}/playground`
+  });
   // app.use(cors());
   // app.use(server.getMiddleware());
-  // eslint-disable-next-line no-undef
   await new Promise((resolve) =>
+  // eslint-disable-next-line no-undef
     httpServer.listen({ port: process.env.PORT }, resolve)
   );
   console.log(
