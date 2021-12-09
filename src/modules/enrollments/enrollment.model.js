@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const enrollmentsSchema = new Schema({
@@ -8,20 +8,20 @@ const enrollmentsSchema = new Schema({
   },
   user_id: {
     type: Schema.ObjectId,
-    required: true
+    required: true,
   },
   status: {
     type: String,
-    enum: ['acepted', 'rejected'],
+    enum: ["acepted", "rejected"],
   },
   enrollmentDate: {
     type: Date,
   },
   egressDate: {
-    type: Date
-  }
-})
+    type: Date,
+  },
+});
 
-const Enrollements = new mongoose.model('enrollments', enrollmentsSchema);
+const Enrollements = new mongoose.model("enrollments", enrollmentsSchema);
 
 export default Enrollements;
