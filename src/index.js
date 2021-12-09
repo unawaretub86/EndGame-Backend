@@ -2,7 +2,7 @@
 import { ApolloServer } from "apollo-server-express";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 import express from "express";
-import cors from "cors";
+// import cors from "cors";
 import http from "http";
 import dotenv from "dotenv";
 
@@ -10,23 +10,27 @@ import dotenv from "dotenv";
 import { userSchema } from "./modules/users/user.module.js";
 import { projectSchema } from "./modules/projects/project.module.js";
 import { enrollmentSchema } from "./modules/enrollments/enrollment.module.js";
-import { advanceSchema } from "./modules/advances/advance.module.js"
+import { advanceSchema } from "./modules/advances/advance.module.js";
 
 // resolvers
 import { projectResolver } from "./modules/projects/project.module.js";
 import { userResolver } from "./modules/users/user.module.js";
-import { enrollmentResolver } from "./modules/enrollments/enrollment.module.js"
+import { enrollmentResolver } from "./modules/enrollments/enrollment.module.js";
 import { advanceResolver } from "./modules/advances/advance.module.js";
 
 // middlewares
-import validateAccess from "./middlewares/access.middlewares.js";
+import validateAuthentication from "./middlewares/access.middlewares.js";
 
 // utilities
 import connect from "./database.js";
 
-
 const typeDefs = [userSchema, projectSchema, enrollmentSchema, advanceSchema];
-const resolvers = [projectResolver, userResolver, enrollmentResolver, advanceResolver];
+const resolvers = [
+  projectResolver,
+  userResolver,
+  enrollmentResolver,
+  advanceResolver,
+];
 
 // Initialization
 dotenv.config();
@@ -39,15 +43,18 @@ const startApolloServer = async (typeDefs, resolvers) => {
     typeDefs,
     resolvers,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    // context: async ({ req }) => await validateAuthentication(req),
   });
   await server.start();
-  // server.applyMiddleware({ app });
-  app.use(cors());
-  app.use(server.getMiddleware());
+  server.applyMiddleware({ app });
+  // app.use(cors());
+  // app.use(server.getMiddleware());
+  // eslint-disable-next-line no-undef
   await new Promise((resolve) =>
     httpServer.listen({ port: process.env.PORT }, resolve)
   );
   console.log(
+    // eslint-disable-next-line no-undef
     `🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`
   );
 };

@@ -1,8 +1,18 @@
 import { Users } from "./user.module.js";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+import { USER_STATUS, ROLES } from "./user.constans.js";
 
-const allUsers = async () => {
-  const users = await Users.find();
-  return users;
+// const allUsers = async (parent, args, { user, errorMessage }) => {
+const allUsers = async (parent, args) => {
+  // if (!user) {
+  //   console.log(user);
+  //   throw new Error(`${errorMessage} error de entrada`);
+  // }
+  // if (user.role !== ROLES.admin) {
+  //   throw new Error("Access denied");
+  // }
+  return await Users.find();
 };
 
 const userById = async (parent, args) => {
@@ -10,12 +20,35 @@ const userById = async (parent, args) => {
   return user;
 };
 
-// Mutations
-const addUser = async (parent, args) => {
-  let user = new Users(args.input);
-  user = await user.save();
-  return user;
+// Register / Login
+const registerUser = async (parent, args) => {
+  const user = new Users({
+    ...args.input,
+    status: USER_STATUS.pending,
+    password: await bcrypt.hash(args.input.password, 12),
+  });
+  console.log(args.input);
+  return user.save();
 };
+
+//login
+const login = async (parent, args) => {
+  const user = await Users.findOne({ email: args.email });
+  if (!user) {
+    throw new Error("User or password are Wrong");
+  }
+  const isValid = await bcrypt.compare(args.password, user.password);
+  if (!isValid) {
+    throw new Error("user or Password are Wrong");
+  }
+  // eslint-disable-next-line no-undef
+  const token = await jwt.sign({ user }, process.env.SECRET, {
+    expiresIn: "1h",
+  });
+  return token;
+};
+
+//Queries and mutations
 
 const updateUser = async (parent, args) => {
   let userUpdated = await Users.findOneAndUpdate(
@@ -71,9 +104,10 @@ export default {
     userById,
     usersByRole,
     userByStatus,
+    login,
   },
   Mutation: {
-    addUser,
+    registerUser,
     updateUser,
     updateStateAdmin,
     updateStateLeader,

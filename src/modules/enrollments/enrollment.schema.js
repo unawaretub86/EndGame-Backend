@@ -1,8 +1,9 @@
-import { gql } from 'apollo-server';
+import { gql } from "apollo-server";
 
 const enrollmentType = gql`
   # Enrollment
   type Enrollment {
+    _id: ID
     status: EnrollmentStatus
     enrollmentDate: String
     egressDate: String
@@ -24,10 +25,23 @@ const queries = gql`
   type Query {
     allEnrollments: [Enrollment]
   }
+
+  type Query {
+    enrollmentById(_id: ID!): Enrollment!
+  }
 `;
 
-export default [
-  enrollmentType,
-  enums,
-  queries,
-];
+const mutations = gql`
+  type Mutation {
+    changeStatusEnrollment(input: changeStatusInput!): Enrollment!
+  }
+`;
+
+const inputs = gql`
+  input changeStatusInput {
+    _id: ID!
+    status: EnrollmentStatus!
+  }
+`;
+
+export default [enrollmentType, enums, queries, mutations, inputs];

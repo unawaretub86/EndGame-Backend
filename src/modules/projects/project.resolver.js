@@ -42,8 +42,7 @@ const leader = async (parent) => {
 };
 
 const projectByPhase = async (parent, args) => {
-  const projects = await Projects.find({ status: args.phase });
-  console.log(args.phase);
+  const projects = await Projects.find({ phase: args.phase });
   return projects;
 };
 
