@@ -51,12 +51,26 @@ const projectByStatus = async (parent, args) => {
   return project;
 };
 
+const projectByLeaderId = async (parent, args) => {
+
+  const leader = await Users.findById(args.leader_id);
+
+  if(!leader){
+    throw new Error("Leader does not exist");
+  }
+
+  const projects = await Projects.find({ leader_id: leader._id });
+
+  return projects;
+}
+
 export default {
   Query: {
     allProjects,
     projectById,
     projectByStatus,
     projectByPhase,
+    projectByLeaderId,
   },
   Project: {
     leader,

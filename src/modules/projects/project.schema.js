@@ -35,19 +35,23 @@ const enums = gql`
 const queries = gql`
   # Query all projects
   type Query {
-    allProjects: [Project]
+    allProjects: [Project]!
   }
 
   type Query {
-    projectById(_id: ID): Project
+    projectById(_id: ID!): Project!
   }
 
   type Query {
-    projectByPhase(phase: Phase!): [Project]
+    projectByPhase(phase: Phase!): [Project]!
   }
 
   type Query {
-    projectByStatus(status: projectStatus!): [Project]
+    projectByStatus(status: projectStatus!): [Project]!
+  }
+
+  type Query {
+    projectByLeaderId(leader_id: ID!): [Project]!
   }
 `;
 
