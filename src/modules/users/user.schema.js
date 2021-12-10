@@ -59,7 +59,7 @@ const queries = gql`
 
 const mutations = gql`
   type Mutation {
-    registerUser(input: RegisterInput!): User!
+    registerUser(input: RegisterInput!): String!
   }
 
   type Mutation {
@@ -105,4 +105,10 @@ const inputs = gql`
   }
 `;
 
-export default [userType, enums, queries, mutations, inputs];
+export default [
+  userType,
+  enums, 
+  queries,
+  mutations, 
+  inputs
+];
