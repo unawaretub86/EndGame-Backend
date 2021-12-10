@@ -26,12 +26,24 @@ const changeStatusEnrollment = async (parent, args) => {
   return enrollUpdated;
 };
 
+// Returns a list of enrollments where user is enroll
+const enrollmentByUserId = async (parent, args) => {
+  const user = await Users.findById(args.user_id);
+
+  if (!user){
+    throw new Error("User does not exist");
+  }
+
+  const enrollments = await Enrollments.find({ user_id: user._id });
+  return enrollments
+}
+
 const project = async (parent) => {
   const project = await Projects.findById(parent.project_id);
   return project;
 };
 
-const student = async (parent) => {
+const student = async (parent, args) => {
   const student = await Users.findById(parent.user_id);
   return student;
 };
@@ -40,6 +52,7 @@ export default {
   Query: {
     allEnrollments,
     enrollmentById,
+    enrollmentByUserId,
   },
   Enrollment: {
     project,
