@@ -1,9 +1,15 @@
 import { Projects } from "./project.module.js";
 import { Users } from "../users/user.module.js";
+import { ROLES } from "../users/user.constans.js";
 
-const allProjects = async () => {
-  const projects = await Projects.find();
-  return projects;
+const allProjects = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    throw new Error(`${errorMessage} that user doesn't exist`);
+  }
+  if (user.role === ROLES.student) {
+    throw new Error(`${errorMessage} Access denied `);
+  }
+  return await Projects.find();
 };
 
 const addProject = async (parent, args) => {
@@ -53,52 +59,51 @@ const projectByStatus = async (parent, args) => {
 
 // returns a project's list where user is leader of those
 const projectByLeaderId = async (parent, args) => {
-
   const leader = await Users.findById(args.leader_id);
 
-  if(!leader){
+  if (!leader) {
     throw new Error("Leader does not exist");
   }
 
   const projects = await Projects.find({ leader_id: leader._id });
 
   return projects;
-}
+};
 
 const activetProject = async (parent, args) => {
   // TODO: Validate user.role === admin
 
   let project = await Projects.findById(args.input._id);
-  
+
   if (!project) {
     throw new Error("Project does not exist");
   }
 
-  if (project.phase === 'ended'){
+  if (project.phase === "ended") {
     throw new Error("Project ended");
   }
 
   if (!project.phase) {
     project = await Projects.findOneAndUpdate(
-      {_id: args.input._id},
+      { _id: args.input._id },
       {
         startDate: new Date(),
-        status: args.input.status
+        status: args.input.status,
       },
       { new: true }
     );
   }
 
   project = await Projects.findOneAndUpdate(
-    {_id: args.input._id},
+    { _id: args.input._id },
     {
-      status: args.input.status
+      status: args.input.status,
     },
     { new: true }
   );
 
   return project;
-}
+};
 
 export default {
   Query: {

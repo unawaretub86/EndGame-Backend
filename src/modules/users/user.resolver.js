@@ -6,7 +6,7 @@ import { USER_STATUS, ROLES } from "./user.constans.js";
 const allUsers = async (parent, args, { user, errorMessage }) => {
   if (!user) {
     console.log(user);
-    throw new Error(`${errorMessage} error de entrada`);
+    throw new Error(`${errorMessage} error that user doesn't exists`);
   }
   if (user.role !== ROLES.admin) {
     throw new Error("Access denied");
