@@ -3,14 +3,15 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { USER_STATUS, ROLES } from "./user.constans.js";
 
-const allUsers = async (parent, args, { user, errorMessage }) => {
-  if (!user) {
-    console.log(user);
-    throw new Error(`${errorMessage} error de entrada`);
-  }
-  if (user.role !== ROLES.admin) {
-    throw new Error("Access denied");
-  }
+// const allUsers = async (parent, args, { user, errorMessage }) => {
+const allUsers = async (parent, args) => {
+  // if (!user) {
+  //   console.log(user);
+  //   throw new Error(`${errorMessage} error de entrada`);
+  // }
+  // if (user.role !== ROLES.admin) {
+  //   throw new Error("Access denied");
+  // }
   return await Users.find();
 };
 
@@ -26,8 +27,12 @@ const registerUser = async (parent, args) => {
     status: USER_STATUS.pending,
     password: await bcrypt.hash(args.input.password, 12),
   });
-  console.log(user);
-  return user.save();
+  console.log(args.input);
+  const isUserSaved = user.save();
+  if (!isUserSaved){
+    throw new Error("User not saved")
+  }
+  return "Ok!"
 };
 
 //login
