@@ -105,10 +105,4 @@ const inputs = gql`
   }
 `;
 
-export default [
-  userType,
-  enums, 
-  queries,
-  mutations, 
-  inputs
-];
+export default [userType, enums, queries, mutations, inputs];
