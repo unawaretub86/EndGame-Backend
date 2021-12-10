@@ -26,7 +26,7 @@ const registerUser = async (parent, args) => {
     status: USER_STATUS.pending,
     password: await bcrypt.hash(args.input.password, 12),
   });
-  console.log(args.input);
+  console.log(user);
   return user.save();
 };
 
