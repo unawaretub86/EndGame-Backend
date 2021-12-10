@@ -4,6 +4,8 @@ const enrollmentType = gql`
   # Enrollment
   type Enrollment {
     _id: ID
+    project_id: ID
+    user_id: ID
     status: EnrollmentStatus
     enrollmentDate: String
     egressDate: String
@@ -28,6 +30,10 @@ const queries = gql`
 
   type Query {
     enrollmentById(_id: ID!): Enrollment!
+  }
+
+  type Query {
+    enrollmentByUserId(user_id: ID!): [Enrollment]
   }
 `;
 

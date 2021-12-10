@@ -51,12 +51,62 @@ const projectByStatus = async (parent, args) => {
   return project;
 };
 
+// returns a project's list where user is leader of those
+const projectByLeaderId = async (parent, args) => {
+
+  const leader = await Users.findById(args.leader_id);
+
+  if(!leader){
+    throw new Error("Leader does not exist");
+  }
+
+  const projects = await Projects.find({ leader_id: leader._id });
+
+  return projects;
+}
+
+const activetProject = async (parent, args) => {
+  // TODO: Validate user.role === admin
+
+  let project = await Projects.findById(args.input._id);
+  
+  if (!project) {
+    throw new Error("Project does not exist");
+  }
+
+  if (project.phase === 'ended'){
+    throw new Error("Project ended");
+  }
+
+  if (!project.phase) {
+    project = await Projects.findOneAndUpdate(
+      {_id: args.input._id},
+      {
+        startDate: new Date(),
+        status: args.input.status
+      },
+      { new: true }
+    );
+  }
+
+  project = await Projects.findOneAndUpdate(
+    {_id: args.input._id},
+    {
+      status: args.input.status
+    },
+    { new: true }
+  );
+
+  return project;
+}
+
 export default {
   Query: {
     allProjects,
     projectById,
     projectByStatus,
     projectByPhase,
+    projectByLeaderId,
   },
   Project: {
     leader,
@@ -64,5 +114,6 @@ export default {
   Mutation: {
     addProject,
     updateProject,
+    activetProject,
   },
 };

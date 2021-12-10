@@ -28,7 +28,11 @@ const registerUser = async (parent, args) => {
     password: await bcrypt.hash(args.input.password, 12),
   });
   console.log(args.input);
-  return user.save();
+  const isUserSaved = user.save();
+  if (!isUserSaved){
+    throw new Error("User not saved")
+  }
+  return "Ok!"
 };
 
 //login
