@@ -65,6 +65,41 @@ const projectByLeaderId = async (parent, args) => {
   return projects;
 }
 
+const activetProject = async (parent, args) => {
+  // TODO: Validate user.role === admin
+
+  let project = await Projects.findById(args.input._id);
+  
+  if (!project) {
+    throw new Error("Project does not exist");
+  }
+
+  if (project.phase === 'ended'){
+    throw new Error("Project ended");
+  }
+
+  if (!project.phase) {
+    project = await Projects.findOneAndUpdate(
+      {_id: args.input._id},
+      {
+        startDate: new Date(),
+        status: args.input.status
+      },
+      { new: true }
+    );
+  }
+
+  project = await Projects.findOneAndUpdate(
+    {_id: args.input._id},
+    {
+      status: args.input.status
+    },
+    { new: true }
+  );
+
+  return project;
+}
+
 export default {
   Query: {
     allProjects,
@@ -79,5 +114,6 @@ export default {
   Mutation: {
     addProject,
     updateProject,
+    activetProject,
   },
 };
