@@ -69,7 +69,14 @@ const updateUser = async (parent, args) => {
   return userUpdated;
 };
 
-const updateStateAdmin = async (parent, args) => {
+const updateStateAdmin = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    console.log(user);
+    throw new Error(`${errorMessage} error de entrada`);
+  }
+  if (user.role !== ROLES.admin) {
+    throw new Error("Access denied");
+  }
   let userUpdatedByAdmin = await Users.findOneAndUpdate(
     { _id: args.input.userById },
     {
@@ -77,7 +84,7 @@ const updateStateAdmin = async (parent, args) => {
     },
     { new: true }
   );
-  return userUpdatedByAdmin;
+  return await userUpdatedByAdmin;
 };
 
 const updateStateLeader = async (parent, args) => {
