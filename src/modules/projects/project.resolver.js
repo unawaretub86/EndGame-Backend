@@ -51,6 +51,7 @@ const projectByStatus = async (parent, args) => {
   return project;
 };
 
+// returns a project's list where user is leader of those
 const projectByLeaderId = async (parent, args) => {
 
   const leader = await Users.findById(args.leader_id);
