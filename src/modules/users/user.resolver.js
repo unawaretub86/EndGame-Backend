@@ -71,7 +71,6 @@ const updateUser = async (parent, args) => {
 
 const updateStateAdmin = async (parent, args, { user, errorMessage }) => {
   if (!user) {
-    console.log(user);
     throw new Error(`${errorMessage} that user doesn't exist`);
   }
   if (user.role !== ROLES.admin) {
