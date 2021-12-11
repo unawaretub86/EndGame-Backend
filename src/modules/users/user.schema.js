@@ -65,7 +65,7 @@ const mutations = gql`
   }
 
   type Mutation {
-    login(input: LoginInput!): User!
+    login(input: LoginInput!): String
   }
 
   type Mutation {
