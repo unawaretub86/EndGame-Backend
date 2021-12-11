@@ -15,6 +15,12 @@ const allUsers = async (parent, args) => {
   return await Users.find();
 };
 
+const allStudents = async (parent, args) => {
+  //Todo: Validate that the user who required this query is a leader
+
+  return await Users.find({ role: ROLES.student });
+}
+
 const userById = async (parent, args) => {
   const user = await Users.findById(args._id);
   return user;
@@ -114,6 +120,7 @@ export default {
     userById,
     usersByRole,
     userByStatus,
+    allStudents
   },
   Mutation: {
     registerUser,

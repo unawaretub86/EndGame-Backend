@@ -40,6 +40,11 @@ const queries = gql`
     allUsers: [User]
   }
 
+  # Query all students
+  type Query {
+    allStudents: [User]
+  }
+
   type Query {
     userById(_id: ID!): User
   }
