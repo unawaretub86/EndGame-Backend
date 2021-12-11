@@ -3,6 +3,14 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { USER_STATUS, ROLES } from "./user.constans.js";
 
+const userExist = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    throw new Error(`${errorMessage} that user does't exist`);
+  }
+  console.log(user.name);
+  return await Users.find();
+};
+
 const allUsers = async (parent, args, { user, errorMessage }) => {
   if (!user) {
     console.log(user);
@@ -14,12 +22,18 @@ const allUsers = async (parent, args, { user, errorMessage }) => {
   return await Users.find();
 };
 
+const allStudents = async (parent, args) => {
+  //Todo: Validate that the user who required this query is a leader
+
+  return await Users.find({ role: ROLES.student });
+};
+
 const userById = async (parent, args) => {
   const user = await Users.findById(args._id);
   return user;
 };
 
-// Register / Login
+// Register
 const registerUser = async (parent, args) => {
   const user = new Users({
     ...args.input,
@@ -34,26 +48,59 @@ const registerUser = async (parent, args) => {
   return "Ok!";
 };
 
-//login
+//login, returns token
 const login = async (parent, args) => {
-  const user = await Users.findOne({ email: args.email });
+  // Validate user's existence
+  const user = await Users.findOne({ email: args.input.email });
   if (!user) {
-    throw new Error("User or password are Wrong");
+    throw new Error("User or Password are Wrong");
   }
-  const isValid = await bcrypt.compare(args.password, user.password);
+
+  // Validate password
+  const isValid = await bcrypt.compare(args.input.password, user.password);
   if (!isValid) {
-    throw new Error("user or Password are Wrong");
+    throw new Error("User or Password are Wrong");
   }
-  // eslint-disable-next-line no-undef
-  const token = await jwt.sign({ user }, process.env.SECRET, {
-    expiresIn: "1h",
-  });
+
+  // Validate status
+  if (user.status !== USER_STATUS.authorized) {
+    throw new Error("User unauthorized");
+  }
+
+  // Token creation
+  const token = await jwt.sign(
+    {
+      _id: user._id,
+      name: user.name,
+      lastName: user.lastName,
+      email: user.email,
+      role: user.role,
+      status: user.status,
+
+      // eslint-disable-next-line no-undef
+    },
+    process.env.SECRET,
+    {
+      expiresIn: "24h",
+    }
+  );
   return token;
 };
 
 //Queries and mutations
 
-const updateUser = async (parent, args) => {
+const updateUser = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    throw new Error(`${errorMessage} token error`);
+  }
+
+  // const userToUpdate = await Users.findById(user._id);
+  // console.log(String(user._id));
+  // console.log(String(userToUpdate._id));
+  // if (String(userToUpdate.email) === String(args.input.email)){
+  //   console.log("user valid");
+  // }
+
   let userUpdated = await Users.findOneAndUpdate(
     { _id: args.input.userById },
     {
@@ -113,12 +160,13 @@ export default {
     userById,
     usersByRole,
     userByStatus,
-    login,
+    allStudents,
   },
   Mutation: {
     registerUser,
     updateUser,
     updateStateAdmin,
     updateStateLeader,
+    login,
   },
 };

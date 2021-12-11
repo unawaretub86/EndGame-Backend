@@ -40,6 +40,11 @@ const queries = gql`
     allUsers: [User]
   }
 
+  # Query all students
+  type Query {
+    allStudents: [User]
+  }
+
   type Query {
     userById(_id: ID!): User
   }
@@ -52,14 +57,15 @@ const queries = gql`
     userByStatus(status: userStatus!): [User]
   }
 
-  type Query {
-    login(email: String!, password: String!): String!
-  }
 `;
 
 const mutations = gql`
   type Mutation {
     registerUser(input: RegisterInput!): String!
+  }
+
+  type Mutation {
+    login(input: LoginInput!): String
   }
 
   type Mutation {
@@ -82,6 +88,11 @@ const inputs = gql`
     name: String!
     lastName: String!
     role: Role!
+    password: String!
+  }
+
+  input LoginInput {
+    email: String!
     password: String!
   }
 

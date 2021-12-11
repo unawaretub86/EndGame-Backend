@@ -7,12 +7,13 @@ const userExist = async (parent, args, { user, errorMessage }) => {
   if (!user) {
     throw new Error(`${errorMessage} that user does't exist`);
   }
+  console.log(user.name);
   return user;
 };
 
 const allProjects = async (parent, args, { user, errorMessage }) => {
-  user.userExist;
-  if (user.role === ROLES.student) {
+  userExist(user);
+  if (user.role !== ROLES.admin) {
     throw new Error(`${errorMessage} Access denied `);
   }
   return await Projects.find();
