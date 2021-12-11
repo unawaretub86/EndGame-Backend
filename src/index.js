@@ -2,7 +2,7 @@
 import { ApolloServer } from "apollo-server-express";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 import express from "express";
-// import cors from "cors";
+import cors from "cors";
 import http from "http";
 import dotenv from "dotenv";
 
@@ -53,7 +53,7 @@ const startApolloServer = async (typeDefs, resolvers) => {
     path: `${server.graphqlPath}`,
     playgroundPath: `${server.graphqlPath}/playground`
   });
-  // app.use(cors());
+  app.use(cors());
   // app.use(server.getMiddleware());
   await new Promise((resolve) =>
   // eslint-disable-next-line no-undef

@@ -7,7 +7,7 @@ const validateAuthentication = async (req) => {
     // eslint-disable-next-line no-undef
     const session = await jwt.verify(token, process.env.SECRET);
     return {
-      user: session.user,
+      user: session
     };
   } catch (error) {
     return {
