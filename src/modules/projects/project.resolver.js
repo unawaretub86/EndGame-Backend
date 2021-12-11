@@ -2,15 +2,25 @@ import { Projects } from "./project.module.js";
 import { Users } from "../users/user.module.js";
 import { ROLES } from "../users/user.constans.js";
 
-const allProjects = async (parent, args, { user, errorMessage }) => {
+// eslint-disable-next-line no-unused-vars
+const userExist = async (parent, args, { user, errorMessage }) => {
   if (!user) {
-    throw new Error(`${errorMessage} that user doesn't exist`);
+    throw new Error(`${errorMessage} that user does't exist`);
   }
+  return user;
+};
+
+const allProjects = async (parent, args, { user, errorMessage }) => {
+  user.userExist;
   if (user.role === ROLES.student) {
     throw new Error(`${errorMessage} Access denied `);
   }
   return await Projects.find();
 };
+
+// const setEndedProject = async (parent, args {user, errorMessage}) =>{
+//   if(!user )
+// }
 
 const addProject = async (parent, args) => {
   let project = new Projects(args.input);
