@@ -56,7 +56,6 @@ const queries = gql`
   type Query {
     userByStatus(status: userStatus!): [User]
   }
-
 `;
 
 const mutations = gql`
@@ -97,7 +96,6 @@ const inputs = gql`
   }
 
   input UpdateUserInput {
-    userById: ID!
     email: String
     documentId: String
     name: String

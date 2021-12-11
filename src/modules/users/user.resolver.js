@@ -3,13 +3,14 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { USER_STATUS, ROLES } from "./user.constans.js";
 
-const userExist = async (parent, args, { user, errorMessage }) => {
-  if (!user) {
-    throw new Error(`${errorMessage} that user does't exist`);
-  }
-  console.log(user.name);
-  return await Users.find();
-};
+// funcion a terminar de verificar si el usuarioexiste
+// const userExist = async (parent, args, { user, errorMessage }) => {
+//   if (!user) {
+//     throw new Error(`${errorMessage} that user does't exist`);
+//   }
+//   console.log(user.name);
+//   return await Users.find();
+// };
 
 const allUsers = async (parent, args, { user, errorMessage }) => {
   if (!user) {
@@ -97,12 +98,12 @@ const updateUser = async (parent, args, { user, errorMessage }) => {
   // const userToUpdate = await Users.findById(user._id);
   // console.log(String(user._id));
   // console.log(String(userToUpdate._id));
-  // if (String(userToUpdate.email) === String(args.input.email)){
+  // if (String(userToUpdate.email) === String(args.input.email)) {
   //   console.log("user valid");
   // }
 
   let userUpdated = await Users.findOneAndUpdate(
-    { _id: args.input.userById },
+    { _id: user._id },
     {
       name: args.input.name,
       email: args.input.email,
