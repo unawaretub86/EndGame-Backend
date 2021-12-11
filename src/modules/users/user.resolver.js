@@ -37,19 +37,25 @@ const registerUser = async (parent, args) => {
 
 //login
 const login = async (parent, args) => {
-  const user = await Users.findOne({ email: args.email });
+  const user = await Users.findOne({ email: args.input.email });
   if (!user) {
-    throw new Error("User or password are Wrong");
+    throw new Error("User or Password are Wrong");
   }
-  const isValid = await bcrypt.compare(args.password, user.password);
+  
+  const isValid = await bcrypt.compare(args.input.password, user.password);
   if (!isValid) {
-    throw new Error("user or Password are Wrong");
+    throw new Error("User or Password are Wrong");
   }
+
+  // ----------------------------------------------------- descomentar al implementar token de nuevo
   // eslint-disable-next-line no-undef
-  const token = await jwt.sign({ user }, process.env.SECRET, {
-    expiresIn: "1h",
-  });
-  return token;
+  // const token = await jwt.sign({ user }, process.env.SECRET, {
+  //   expiresIn: "1h",
+  // });
+  // return token;
+  // ----------------------------------------------------
+
+  return user;
 };
 
 //Queries and mutations
@@ -108,12 +114,12 @@ export default {
     userById,
     usersByRole,
     userByStatus,
-    login,
   },
   Mutation: {
     registerUser,
     updateUser,
     updateStateAdmin,
     updateStateLeader,
+    login,
   },
 };
