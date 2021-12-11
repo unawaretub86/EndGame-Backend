@@ -3,15 +3,13 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { USER_STATUS, ROLES } from "./user.constans.js";
 
-// const allUsers = async (parent, args, { user, errorMessage }) => {
-const allUsers = async (parent, args) => {
-  // if (!user) {
-  //   console.log(user);
-  //   throw new Error(`${errorMessage} error de entrada`);
-  // }
-  // if (user.role !== ROLES.admin) {
-  //   throw new Error("Access denied");
-  // }
+const allUsers = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    throw new Error(`${errorMessage} input error`);
+  }
+  if (user.role !== ROLES.admin) {
+    throw new Error("Access denied");
+  }
   return await Users.find();
 };
 
@@ -26,7 +24,7 @@ const userById = async (parent, args) => {
   return user;
 };
 
-// Register / Login
+// Register
 const registerUser = async (parent, args) => {
   const user = new Users({
     ...args.input,
@@ -41,7 +39,7 @@ const registerUser = async (parent, args) => {
   return "Ok!"
 };
 
-//login
+//login, returns token
 const login = async (parent, args) => {
 
   // Validate user's existence
@@ -58,7 +56,7 @@ const login = async (parent, args) => {
 
   // Validate status
   if (user.status !== USER_STATUS.authorized){
-    throw new Error("User authorized")
+    throw new Error("User unauthorized")
   }
 
   // Token creation
@@ -80,7 +78,19 @@ const login = async (parent, args) => {
 
 //Queries and mutations
 
-const updateUser = async (parent, args) => {
+const updateUser = async (parent, args, { user, errorMessage }) => {
+
+  if (!user){
+    throw new Error(`${errorMessage} token error`);
+  }
+
+  // const userToUpdate = await Users.findById(user._id);
+  // console.log(String(user._id));
+  // console.log(String(userToUpdate._id));
+  // if (String(userToUpdate.email) === String(args.input.email)){
+  //   console.log("user valid");
+  // }
+
   let userUpdated = await Users.findOneAndUpdate(
     { _id: args.input.userById },
     {
