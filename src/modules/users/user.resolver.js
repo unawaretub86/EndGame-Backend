@@ -15,6 +15,12 @@ const allUsers = async (parent, args) => {
   return await Users.find();
 };
 
+const allStudents = async (parent, args) => {
+  //Todo: Validate that the user who required this query is a leader
+
+  return await Users.find({ role: ROLES.student });
+};
+
 const userById = async (parent, args) => {
   const user = await Users.findById(args._id);
   return user;
@@ -37,25 +43,39 @@ const registerUser = async (parent, args) => {
 
 //login
 const login = async (parent, args) => {
+
+  // Validate user's existence
   const user = await Users.findOne({ email: args.input.email });
   if (!user) {
     throw new Error("User or Password are Wrong");
   }
-  
+
+  // Validate password
   const isValid = await bcrypt.compare(args.input.password, user.password);
   if (!isValid) {
     throw new Error("User or Password are Wrong");
   }
 
-  // ----------------------------------------------------- descomentar al implementar token de nuevo
-  // eslint-disable-next-line no-undef
-  // const token = await jwt.sign({ user }, process.env.SECRET, {
-  //   expiresIn: "1h",
-  // });
-  // return token;
-  // ----------------------------------------------------
+  // Validate status
+  if (user.status !== USER_STATUS.authorized){
+    throw new Error("User authorized")
+  }
 
-  return user;
+  // Token creation
+  const token = await jwt.sign(
+    { 
+      _id: user._id,
+      name: user.name,
+      lastName: user.lastName,
+      email: user.email,
+      role: user.role,
+      status: user.status
+
+      // eslint-disable-next-line no-undef
+    }, process.env.SECRET, {
+    expiresIn: "24h",
+  });
+  return token;
 };
 
 //Queries and mutations
@@ -114,6 +134,7 @@ export default {
     userById,
     usersByRole,
     userByStatus,
+    allStudents
   },
   Mutation: {
     registerUser,

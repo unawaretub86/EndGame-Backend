@@ -45,9 +45,7 @@ const startApolloServer = async (typeDefs, resolvers) => {
     typeDefs,
     resolvers,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-
-    // Descomentar cuando se requiera acceso por token
-    // context: async ({ req }) => await validateAuthentication(req),
+    context: async ({ req }) => await validateAuthentication(req),
   });
   await server.start();
   server.applyMiddleware({
