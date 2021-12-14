@@ -3,14 +3,14 @@ import { gql } from "apollo-server";
 const enrollmentType = gql`
   # Enrollment
   type Enrollment {
-    _id: ID
-    project_id: ID
-    user_id: ID
+    _id: ID!
+    project_id: ID!
+    user_id: ID!
     status: EnrollmentStatus
     enrollmentDate: String
     egressDate: String
-    project: Project!
-    student: User!
+    project: Project
+    student: User
   }
 `;
 
@@ -25,7 +25,7 @@ const enums = gql`
 const queries = gql`
   # Query all enrollments
   type Query {
-    allEnrollments: [Enrollment]
+    allEnrollments: [Enrollment]!
   }
 
   type Query {
@@ -39,15 +39,30 @@ const queries = gql`
 
 const mutations = gql`
   type Mutation {
+    addEnrollment(input: addEnrollmentInput!): Enrollment!
+  }
+
+  type Mutation {
     changeStatusEnrollment(input: changeStatusInput!): Enrollment!
   }
 `;
 
 const inputs = gql`
+  input addEnrollmentInput {
+    project_id: ID!
+    user_id: ID!
+  }
+
   input changeStatusInput {
     _id: ID!
     status: EnrollmentStatus!
   }
 `;
 
-export default [enrollmentType, enums, queries, mutations, inputs];
+export default [
+  enrollmentType, 
+  enums, 
+  queries, 
+  mutations, 
+  inputs
+];
