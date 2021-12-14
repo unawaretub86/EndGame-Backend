@@ -1,19 +1,19 @@
-import { gql } from 'apollo-server';
+import { gql } from "apollo-server";
 
 const projectType = gql`
   # Project
   type Project {
-    _id: ID!,
+    _id: ID!
     name: String!
     generalObjective: String!
     specificObjectives: [String]!
     budget: Float!
-    startDate: String!
-    endDate: String!
+    startDate: String
+    endDate: String
     leader_id: ID!
-    status: projectStatus!
+    status: projectStatus
     phase: Phase
-    leader: User!
+    leader: User
   }
 `;
 
@@ -27,7 +27,7 @@ const enums = gql`
   # Enum for phase values
   enum Phase {
     started
-    in progress
+    inProgress
     ended
   }
 `;
@@ -35,16 +35,64 @@ const enums = gql`
 const queries = gql`
   # Query all projects
   type Query {
-    allProjects: [Project]
+    allProjects: [Project]!
   }
 
   type Query {
-    project(_id: ID): Project
+    projectById(_id: ID!): Project!
+  }
+
+  type Query {
+    projectByPhase(phase: Phase!): [Project]!
+  }
+
+  type Query {
+    projectByStatus(status: projectStatus!): [Project]!
+  }
+
+  type Query {
+    projectByLeaderId(leader_id: ID!): [Project]!
   }
 `;
 
-export default [
-  projectType,
-  enums,
-  queries
-];
+const mutations = gql`
+  type Mutation {
+    addProject(input: AddProjectInput!): Project!
+  }
+  type Mutation {
+    updateProject(input: UpdateProjectInput!): Project!
+  }
+
+  type Mutation {
+    activetProject(input: ActiveProjectInput!): Project!
+  }
+`;
+
+const inputs = gql`
+  input AddProjectInput {
+    name: String!
+    generalObjective: String!
+    specificObjectives: [String]!
+    budget: Float!
+    leader_id: ID!
+  }
+
+  input UpdateProjectInput {
+    projectById: ID!
+    name: String
+    generalObjective: String
+    specificObjectives: [String]
+    budget: Float
+    startDate: String
+    endDate: String
+    status: projectStatus
+    phase: Phase
+  }
+
+  input ActiveProjectInput {
+    _id: ID!
+    status: projectStatus!
+  }
+`;
+
+export default [projectType, enums, queries, mutations, inputs];

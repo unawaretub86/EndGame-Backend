@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const projectsSchema = new Schema({
@@ -20,11 +20,9 @@ const projectsSchema = new Schema({
   },
   startDate: {
     type: Date,
-    required: true,
   },
   endDate: {
     type: Date,
-    required: true,
   },
   leader_id: {
     type: Schema.ObjectId,
@@ -32,14 +30,14 @@ const projectsSchema = new Schema({
   },
   status: {
     type: String,
-    required: true,
+    enum: ["active", "inactive"],
   },
   phase: {
     type: String,
-    enum: ['started', 'in progress', 'ended']
-  }
+    enum: ["started", "in progress", "ended"],
+  },
 });
 
-const Projects = new mongoose.model('projects', projectsSchema);
+const Projects = new mongoose.model("projects", projectsSchema);
 
 export default Projects;

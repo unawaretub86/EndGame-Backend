@@ -18,22 +18,19 @@ db.getCollection(collection);
 db.createCollection(collection, {
   validator: {
     $jsonSchema: {
-      required: ['email', 'documentId', 'name', 'lastName', 'fullName', 'role', 'status'],
+      required: ['email', 'documentId', 'name', 'lastName', 'role', 'status'],
       properties: {
         email: {
           bsonType: 'string',
           pattern: '^[a-z0-9+_.-]+@[a-z0-9.-]+$'
         },
         documentId: {
-          bsonType: 'long',
+          bsonType: 'string',
         },
         name: {
           bsonType: 'string'
         },
         lastName: {
-          bsonType: 'string'
-        },
-        fullName: {
           bsonType: 'string'
         },
         role: {
@@ -57,50 +54,45 @@ db.getCollection(collection).createIndex({ documentId: 1 }, { unique: true });
 const users = [
   {
     "email": "tomas.anderson@mail.com",
-    "documentId": Long('1020345678'),
+    "documentId": '1020345678',
     "name": "Tomas",
     "lastName": "Anderson",
-    "fullName": "Tomas Anderson",
     "role": "admin",
     "status": "pending",
     "password": "$2a$10$FEBywZh8u9M0Cec/0mWep.1kXrwKeiWDba6tdKvDfEBjyePJnDT7K"
   },
   {
     "email": "peter.griffin@mail.com",
-    "documentId": Long('1234567890'),
+    "documentId": '1234567890',
     "name": "Peter",
     "lastName": "Griffin",
-    "fullName": "Peter Griffin",
     "role": "student",
     "status": "pending",
     "password": "$2a$10$FEBywZh8u9M0Cec/0mWep.1kXrwKeiWDba6tdKvDfEBjyePJnDT7K"
   },
   {
     "email": "walter.white@mail.com",
-    "documentId": Long('1025342546'),
+    "documentId": '1025342546',
     "name": "Walter",
     "lastName": "White",
-    "fullName": "Walter White",
     "role": "leader",
     "status": "pending",
     "password": "$2a$10$FEBywZh8u9M0Cec/0mWep.1kXrwKeiWDba6tdKvDfEBjyePJnDT7K"
   },
   {
     "email": "rick.sanchez@mail.com",
-    "documentId": Long('1021587653'),
+    "documentId": '1021587653',
     "name": "Rick",
     "lastName": "Sanchez",
-    "fullName": "Rick Sanchez",
     "role": "student",
     "status": "pending",
     "password": "$2a$10$FEBywZh8u9M0Cec/0mWep.1kXrwKeiWDba6tdKvDfEBjyePJnDT7K"
   },
   {
     "email": "john.snow@mail.com",
-    "documentId": Long('1022351234'),
+    "documentId": '1022351234',
     "name": "John",
     "lastName": "Snow",
-    "fullName": "John Snow",
     "role": "leader",
     "status": "pending",
     "password": "$2a$10$FEBywZh8u9M0Cec/0mWep.1kXrwKeiWDba6tdKvDfEBjyePJnDT7K"
@@ -133,7 +125,7 @@ db.createCollection(collection, {
           bsonType: 'array'
         },
         budget: {
-          bsonType: 'decimal'
+          bsonType: 'number'
         },
         startDate: {
           bsonType: 'date'
@@ -160,7 +152,7 @@ const projects = [
     "name": "Project 1",
     "generalObjective": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris.",
     "specificObjectives": ["Lorem ipsum dolor sit amet, consectetur adipiscing elit", "Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris."],
-    "budget": Decimal128('20000000'),
+    "budget": Long('20000000'),
     "startDate": new Date(),
     "endDate": new Date(new Date().getTime() + 60*24*60*60000),
     "leader_id": db.users.findOne({email: 'walter.white@mail.com'})._id,
@@ -170,7 +162,7 @@ const projects = [
     "name": "Project 2",
     "generalObjective": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris.",
     "specificObjectives": ["Lorem ipsum dolor sit amet, consectetur adipiscing elit", "Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris."],
-    "budget": Decimal128('10000000'),
+    "budget": Long('10000000'),
     "startDate": new Date(),
     "endDate": new Date(new Date().getTime() + 60*24*60*60000),
     "leader_id": db.users.findOne({email: 'walter.white@mail.com'})._id,
@@ -180,7 +172,7 @@ const projects = [
     "name": "Project 3",
     "generalObjective": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris.",
     "specificObjectives": ["Lorem ipsum dolor sit amet, consectetur adipiscing elit", "Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris."],
-    "budget": Decimal128('15000000'),
+    "budget": Long('15000000'),
     "startDate": new Date(),
     "endDate": new Date(new Date().getTime() + 60*24*60*60000),
     "leader_id": db.users.findOne({email: 'john.snow@mail.com'})._id,
@@ -190,7 +182,7 @@ const projects = [
     "name": "Project 4",
     "generalObjective": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris.",
     "specificObjectives": ["Lorem ipsum dolor sit amet, consectetur adipiscing elit", "Praesent nisl augue, ultrices non placerat maximus, feugiat nec mauris."],
-    "budget": Decimal128('35000000'),
+    "budget": Long('35000000'),
     "startDate": new Date(),
     "endDate": new Date(new Date().getTime() + 60*24*60*60000),
     "leader_id": db.users.findOne({email: 'john.snow@mail.com'})._id,
