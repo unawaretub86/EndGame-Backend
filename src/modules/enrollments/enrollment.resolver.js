@@ -26,17 +26,29 @@ const changeStatusEnrollment = async (parent, args) => {
   return enrollUpdated;
 };
 
+const changePhaseEnrollment = async (parent, args) => {
+  let enrollUpdated = await Enrollments.findOneAndUpdate(
+    { _id: args.input._id },
+    {
+      status: args.input.status,
+      enrollmentDate: new Date(),
+    },
+    { new: true }
+  );
+  return enrollUpdated;
+};
+
 // Returns a list of enrollments where user is enroll
 const enrollmentByUserId = async (parent, args) => {
   const user = await Users.findById(args.user_id);
 
-  if (!user){
+  if (!user) {
     throw new Error("User does not exist");
   }
 
   const enrollments = await Enrollments.find({ user_id: user._id });
-  return enrollments
-}
+  return enrollments;
+};
 
 const project = async (parent) => {
   const project = await Projects.findById(parent.project_id);

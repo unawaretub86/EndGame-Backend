@@ -110,7 +110,6 @@ const updateUser = async (parent, args, { user, errorMessage }) => {
       documentId: args.input.documentId,
       lastName: args.input.lastName,
       password: args.input.password,
-      fullName: args.input.fullName,
     },
     { new: true }
   );
