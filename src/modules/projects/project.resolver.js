@@ -34,7 +34,7 @@ const addProject = async (parent, args, { user, errorMessage }) => {
   if (!user) {
     throw new Error(`${errorMessage} token error`);
   }
-  if (user.role != ROLES.admin) {
+  if (user.role != ROLES.leader) {
     throw new Error(`access denied`);
   }
   let project = new Projects({
