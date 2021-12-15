@@ -1,7 +1,17 @@
+<<<<<<< HEAD
 import { Projects } from "./project.module.js";
 import { Users } from "../users/user.module.js";
 import { ROLES } from "../users/user.constans.js";
 import { PROJECT_STATUS } from "../projects/project.constans.js";
+=======
+// import moduleName from "graphql-tools";
+import { 
+  Projects,
+  PHASE,
+  Users,
+  ROLES
+} from "./project.module.js";
+>>>>>>> 524e436387e45f932e174a48678903f82bf2b5e5
 
 // eslint-disable-next-line no-unused-vars
 const userExist = async (parent, args, { user, errorMessage }) => {
@@ -96,6 +106,7 @@ const projectByLeaderId = async (parent, args) => {
 
   return projects;
 };
+<<<<<<< HEAD
 
 const changePhaseProject = async (parent, args, { user, errorMessage }) => {
   if (!user) {
@@ -116,9 +127,17 @@ const changePhaseProject = async (parent, args, { user, errorMessage }) => {
     return projectUpdated;
   }
 };
+=======
+>>>>>>> 524e436387e45f932e174a48678903f82bf2b5e5
 
-const activetProject = async (parent, args) => {
-  // TODO: Validate user.role === admin
+const activetProject = async (parent, args, {user, errorMessage}) => {
+  
+  if (!user) {
+    throw new Error(`${errorMessage}. Access error`);
+  }
+  if (user.role !== ROLES.admin) {
+    throw new Error("Access denied");
+  }
 
   let project = await Projects.findById(args.input._id);
 
@@ -136,9 +155,15 @@ const activetProject = async (parent, args) => {
       {
         startDate: new Date(),
         status: args.input.status,
+<<<<<<< HEAD
+=======
+        phase: PHASE.started,
+>>>>>>> 524e436387e45f932e174a48678903f82bf2b5e5
       },
       { new: true }
     );
+
+    return project;
   }
 
   project = await Projects.findOneAndUpdate(

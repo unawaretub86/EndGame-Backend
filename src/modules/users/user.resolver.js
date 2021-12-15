@@ -1,7 +1,7 @@
 import { Users } from "./user.module.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { USER_STATUS, ROLES } from "./user.constans.js";
+import { USER_STATUS, ROLES } from "./user.module.js";
 
 // funcion a terminar de verificar si el usuarioexiste
 // const userExist = async (parent, args, { user, errorMessage }) => {
@@ -42,7 +42,7 @@ const registerUser = async (parent, args) => {
     password: await bcrypt.hash(args.input.password, 12),
   });
   console.log(args.input);
-  const isUserSaved = user.save();
+  const isUserSaved = await user.save();
   if (!isUserSaved) {
     throw new Error("User not saved");
   }

@@ -1,9 +1,32 @@
 /* eslint-disable no-unused-vars */
 // models
-import { Enrollments } from "./enrollment.module.js";
-import { Projects } from "../projects/project.module.js";
-import { Users } from "../users/user.module.js";
-import { ROLES } from "../users/user.constans.js";
+import {
+  Enrollments,
+  Projects,
+  Users,
+  USER_STATUS,
+  ROLES,
+  STATUS,
+} from "./enrollment.module.js";
+
+const addEnrollment = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    throw new Error(`${errorMessage}...`);
+  }
+  if (user.role !== ROLES.student) {
+    throw new Error("Access denied");
+  }
+
+  let enrollment = new Enrollments({
+    ...args.input,
+  });
+  let isEnrollmentSave = enrollment.save();
+  if (!isEnrollmentSave) {
+    throw new Error("Enrollment not saved");
+  }
+  enrollment = isEnrollmentSave;
+  return enrollment;
+};
 
 const allEnrollments = async () => {
   const enrollments = await Enrollments.find();
@@ -81,5 +104,6 @@ export default {
   },
   Mutation: {
     changeStatusEnrollment,
+    addEnrollment,
   },
 };
