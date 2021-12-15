@@ -1,6 +1,9 @@
 // import moduleName from "graphql-tools";
-import { Projects } from "./project.module.js";
-import { Users } from "../users/user.module.js";
+import { 
+  Projects,
+  PHASE,
+  Users
+} from "./project.module.js";
 
 const allProjects = async () => {
   const projects = await Projects.find();
@@ -84,9 +87,12 @@ const activetProject = async (parent, args) => {
       {
         startDate: new Date(),
         status: args.input.status,
+        phase: PHASE.started,
       },
       { new: true }
     );
+
+    return project;
   }
 
   project = await Projects.findOneAndUpdate(
