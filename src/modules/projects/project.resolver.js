@@ -1,24 +1,72 @@
-import { Projects } from "./project.module.js";
-import { Users } from "../users/user.module.js";
+import {
+  Projects,
+  PROJECT_STATUS,
+  PHASES,
+  Users,
+  ROLES,
+} from "./project.module.js";
 
-const allProjects = async () => {
-  const projects = await Projects.find();
-  return projects;
+// eslint-disable-next-line no-unused-vars
+const userExist = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    throw new Error(`${errorMessage} that user does't exist`);
+  }
+  console.log(user.name);
+  return user;
 };
 
-const addProject = async (parent, args) => {
-  let project = new Projects(args.input);
+const allProjects = async (parent, args, { user, errorMessage }) => {
+  userExist(user);
+  if (user.role !== ROLES.admin) {
+    throw new Error(`${errorMessage} Access denied `);
+  }
+  return await Projects.find();
+};
+
+// const setEndedProject = async (parent, args {user, errorMessage}) =>{
+//   if(!user )
+// }
+
+const addProject = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    throw new Error(`${errorMessage} token error`);
+  }
+  if (user.role != ROLES.admin) {
+    throw new Error(`access denied`);
+  }
+  let project = new Projects({
+    ...args.input,
+    leader_id: user._id,
+    status: PROJECT_STATUS.inactive,
+    startDate: new Date(),
+  });
   project = await project.save();
   return project;
 };
 
-const projectById = async (parent, args) => {
+const projectById = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    throw new Error(`${errorMessage} token error`);
+  }
+  if (user.role != ROLES.admin) {
+    throw new Error(`access denied`);
+  }
   const project = await Projects.findById(args._id);
   return project;
 };
 
 //pending solve issue date in sandbox
-const updateProject = async (parent, args) => {
+const updateProject = async (parent, args, { user, errorMessage }) => {
+  let projectToUpdate = await Projects.findById(args.input.projectById);
+  if (!projectToUpdate) {
+    throw new Error("Project doesn't exists");
+  }
+  if (!user) {
+    throw new Error(`${errorMessage} token error`);
+  }
+  if (user.role != ROLES.admin) {
+    throw new Error(`access denied`);
+  }
   const projectUpdated = await Projects.findOneAndUpdate(
     { _id: args.input.projectById },
     {
@@ -26,10 +74,6 @@ const updateProject = async (parent, args) => {
       generalObjective: args.input.generalObjective,
       specificObjectives: args.input.specificObjectives,
       budget: args.input.budget,
-      // startDate: args.input.startDate,
-      // endDate: args.input.endDate,
-      status: args.input.status,
-      phase: args.input.phase,
     },
     { new: true }
   );
@@ -53,52 +97,113 @@ const projectByStatus = async (parent, args) => {
 
 // returns a project's list where user is leader of those
 const projectByLeaderId = async (parent, args) => {
-
   const leader = await Users.findById(args.leader_id);
 
-  if(!leader){
+  if (!leader) {
     throw new Error("Leader does not exist");
   }
 
   const projects = await Projects.find({ leader_id: leader._id });
 
   return projects;
-}
+};
 
-const activetProject = async (parent, args) => {
-  // TODO: Validate user.role === admin
-
+const changePhaseProject = async (parent, args, { user, errorMessage }) => {
   let project = await Projects.findById(args.input._id);
-  
+
   if (!project) {
     throw new Error("Project does not exist");
   }
 
-  if (project.phase === 'ended'){
+  if (project.phase === "ended") {
+    throw new Error("Project ended");
+  }
+  if (!user) {
+    throw new Error(`{${errorMessage} token error}`);
+  }
+  if (user.role !== ROLES.admin) {
+    throw new Error("Access denied");
+  }
+  if (args.input.phase === "ended" && args.phase === "inProgress") {
+    let projectUpdated = await Projects.findOneAndUpdate(
+      { _id: args.input._id },
+      {
+        status: args.input.status,
+        endDate: new Date(),
+      },
+      { new: true }
+    );
+    return projectUpdated;
+  }
+};
+
+const activateProject = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    throw new Error(`${errorMessage}. Access error`);
+  }
+  if (user.role !== ROLES.admin) {
+    throw new Error("Access denied");
+  }
+
+  let project = await Projects.findById(args.input._id);
+
+  if (!project) {
+    throw new Error("Project does not exist");
+  }
+
+  if (project.phase === "ended") {
     throw new Error("Project ended");
   }
 
   if (!project.phase) {
     project = await Projects.findOneAndUpdate(
-      {_id: args.input._id},
+      { _id: args.input._id },
       {
         startDate: new Date(),
-        status: args.input.status
+        status: args.input.status,
+        phase: PHASES.started,
       },
       { new: true }
     );
+
+    return project;
   }
 
   project = await Projects.findOneAndUpdate(
-    {_id: args.input._id},
+    { _id: args.input._id },
     {
-      status: args.input.status
+      status: args.input.status,
     },
     { new: true }
   );
 
   return project;
-}
+};
+
+const inactivateProject = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    throw new Error(`${errorMessage}. Access error`);
+  }
+  if (user.role !== ROLES.admin) {
+    throw new Error("Access denied");
+  }
+
+  let project = await Projects.findById(args.input._id);
+
+  if (!project) {
+    throw new Error("Project does not exist");
+  }
+
+  project = await Projects.findOneAndUpdate(
+    { _id: args.input._id },
+    {
+      status: args.input.status,
+    },
+    { new: true }
+  );
+
+  return project;
+};
 
 export default {
   Query: {
@@ -113,7 +218,9 @@ export default {
   },
   Mutation: {
     addProject,
+    activateProject,
+    changePhaseProject,
+    inactivateProject,
     updateProject,
-    activetProject,
   },
 };

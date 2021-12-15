@@ -18,7 +18,7 @@ db.getCollection(collection);
 db.createCollection(collection, {
   validator: {
     $jsonSchema: {
-      required: ['email', 'documentId', 'name', 'lastName', 'role', 'status'],
+      required: ['email', 'documentId', 'name', 'lastName', 'role', 'status', 'password'],
       properties: {
         email: {
           bsonType: 'string',
@@ -113,7 +113,7 @@ db.getCollection(collection).drop();
 db.createCollection(collection, {
   validator: {
     $jsonSchema: {
-      required: ['name', 'generalObjective', 'specificObjectives', 'budget', 'startDate', 'endDate', 'leader_id', 'status'],
+      required: ['name', 'generalObjective', 'specificObjectives', 'budget', 'leader_id', 'status'],
       properties: {
         name: {
           bsonType: 'string',
@@ -212,7 +212,7 @@ db.createCollection(collection, {
           bsonType: 'objectId'
         },
         status: {
-          enum: ['acepted', 'rejected']
+          enum: ['pending', 'acepted', 'rejected']
         },
         enrollmentDate: {
           bsonType: 'date'
@@ -264,9 +264,9 @@ db.getCollection(collection).drop();
 db.createCollection(collection, {
   validator: {
     $jsonSchema: {
-      required: ['project_id', 'addDate', 'description', 'observations'],
+      required: ['enrollment_id', 'addDate', 'description'],
       properties: {
-        project_id: {
+        enrollment_id: {
           bsonType: 'objectId',
         },
         addDate: {

@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const advancesSchema = new Schema({
-  project_id: {
+  enrollment_id: {
     type: Schema.ObjectId,
     required: true,
   },
@@ -13,6 +13,9 @@ const advancesSchema = new Schema({
   description: {
     type: String,
     required: true,
+  },
+  leaderDate: {
+    bsonType: 'date'
   },
   observations: {
     type: String,
