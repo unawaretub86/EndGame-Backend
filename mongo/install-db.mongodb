@@ -110,7 +110,7 @@ collection = 'projects';
 db.getCollection(collection).drop();
 
 // Create projects collection
-db. (collection, {
+db.createCollection(collection, {
   validator: {
     $jsonSchema: {
       required: ['name', 'generalObjective', 'specificObjectives', 'budget', 'startDate', 'endDate', 'leader_id', 'status'],

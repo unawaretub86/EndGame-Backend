@@ -3,6 +3,7 @@
 import { Enrollments } from "./enrollment.module.js";
 import { Projects } from "../projects/project.module.js";
 import { Users } from "../users/user.module.js";
+import { ROLES } from "../users/user.constans.js";
 
 const allEnrollments = async () => {
   const enrollments = await Enrollments.find();
@@ -26,17 +27,25 @@ const changeStatusEnrollment = async (parent, args) => {
   return enrollUpdated;
 };
 
-const changePhaseEnrollment = async (parent, args) => {
-  let enrollUpdated = await Enrollments.findOneAndUpdate(
-    { _id: args.input._id },
-    {
-      status: args.input.status,
-      enrollmentDate: new Date(),
-    },
-    { new: true }
-  );
-  return enrollUpdated;
-};
+// const changePhaseEnrollment = async (parent, args, { user, errorMessage }) => {
+//   if (!user) {
+//     throw new Error(`{${errorMessage} token error}`);
+//   }
+//   if (user.role !== ROLES.admin) {
+//     throw new Error("Access denied");
+//   }
+//   if (args.input.phase === "ended" && args.phase === "in progress") {
+//     let enrollUpdated = await Enrollments.findOneAndUpdate(
+//       { _id: args.input._id },
+//       {
+//         status: args.input.status,
+//         enrollmentDate: new Date(),
+//       },
+//       { new: true }
+//     );
+//     return enrollUpdated;
+//   }
+// };
 
 // Returns a list of enrollments where user is enroll
 const enrollmentByUserId = async (parent, args) => {

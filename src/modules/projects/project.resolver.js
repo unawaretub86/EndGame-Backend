@@ -1,6 +1,7 @@
 import { Projects } from "./project.module.js";
 import { Users } from "../users/user.module.js";
 import { ROLES } from "../users/user.constans.js";
+import { PROJECT_STATUS } from "../projects/project.constans.js";
 
 // eslint-disable-next-line no-unused-vars
 const userExist = async (parent, args, { user, errorMessage }) => {
@@ -23,13 +24,29 @@ const allProjects = async (parent, args, { user, errorMessage }) => {
 //   if(!user )
 // }
 
-const addProject = async (parent, args) => {
-  let project = new Projects(args.input);
+const addProject = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    throw new Error(`${errorMessage} token error`);
+  }
+  if (user.role != ROLES.admin) {
+    throw new Error(`access denied`);
+  }
+  let project = new Projects({
+    ...args.input,
+    status: PROJECT_STATUS.inactive,
+  });
   project = await project.save();
+  console.log(project);
   return project;
 };
 
-const projectById = async (parent, args) => {
+const projectById = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    throw new Error(`${errorMessage} token error`);
+  }
+  if (user.role != ROLES.admin) {
+    throw new Error(`access denied`);
+  }
   const project = await Projects.findById(args._id);
   return project;
 };
@@ -79,6 +96,26 @@ const projectByLeaderId = async (parent, args) => {
   const projects = await Projects.find({ leader_id: leader._id });
 
   return projects;
+};
+
+const changePhaseProject = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    throw new Error(`{${errorMessage} token error}`);
+  }
+  if (user.role !== ROLES.admin) {
+    throw new Error("Access denied");
+  }
+  if (args.input.phase === "ended" && args.phase === "in progress") {
+    let projectUpdated = await Projects.findOneAndUpdate(
+      { _id: args.input._id },
+      {
+        status: args.input.status,
+        enrollmentDate: new Date(),
+      },
+      { new: true }
+    );
+    return projectUpdated;
+  }
 };
 
 const activetProject = async (parent, args) => {
@@ -131,5 +168,6 @@ export default {
     addProject,
     updateProject,
     activetProject,
+    changePhaseProject,
   },
 };
