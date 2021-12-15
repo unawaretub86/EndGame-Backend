@@ -98,6 +98,15 @@ const projectByLeaderId = async (parent, args) => {
 };
 
 const changePhaseProject = async (parent, args, { user, errorMessage }) => {
+  let project = await Projects.findById(args.input._id);
+
+  if (!project) {
+    throw new Error("Project does not exist");
+  }
+
+  if (project.phase === "ended") {
+    throw new Error("Project ended");
+  }
   if (!user) {
     throw new Error(`{${errorMessage} token error}`);
   }
