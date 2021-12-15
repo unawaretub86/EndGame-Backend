@@ -118,10 +118,14 @@ const updateUser = async (parent, args, { user, errorMessage }) => {
 
 const updateStateAdmin = async (parent, args, { user, errorMessage }) => {
   if (!user) {
-    throw new Error(`${errorMessage} that user doesn't exist`);
+    throw new Error(`${errorMessage} token error`);
   }
   if (user.role !== ROLES.admin) {
     throw new Error("Access denied");
+  }
+  let userToUpdate = await Users.findById(args.input._id);
+  if (!userToUpdate) {
+    throw new Error("User doesn't exists");
   }
   let userUpdatedByAdmin = await Users.findOneAndUpdate(
     { _id: args.input.userById },
@@ -133,7 +137,17 @@ const updateStateAdmin = async (parent, args, { user, errorMessage }) => {
   return await userUpdatedByAdmin;
 };
 
-const updateStateLeader = async (parent, args) => {
+const updateStateLeader = async (parent, args, { user, errorMessage }) => {
+  let userToUpdate = await Users.findById(args.input._id);
+  if (!userToUpdate) {
+    throw new Error("User doesn't exists");
+  }
+  if (!user) {
+    throw new Error(`${errorMessage} token error`);
+  }
+  if (user.role != ROLES.leader) {
+    throw new Error("Access denied");
+  }
   let userUpdatedByLeader = await Users.findOneAndUpdate(
     { _id: args.input.userById },
     {
