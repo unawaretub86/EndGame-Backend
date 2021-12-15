@@ -38,6 +38,7 @@ const addProject = async (parent, args, { user, errorMessage }) => {
     ...args.input,
     leader_id: user._id,
     status: PROJECT_STATUS.inactive,
+    startDate: new Date(),
   });
   project = await project.save();
   return project;
