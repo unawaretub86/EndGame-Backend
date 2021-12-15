@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
-import {Advances} from "./advance.module.js";
-import {Projects} from '../projects/project.module.js';
+import {
+    Advances, 
+    Enrollments
+} from "./advance.module.js"
 
 // Queries Resolvers
 const allAdvances = async (parent, args, context, info) => {
@@ -11,7 +13,7 @@ const allAdvances = async (parent, args, context, info) => {
 const advaceById = async (parent, args, context, info) => {
     const advance = await Advances.findById(args._id);
     return advance;
-}
+};
 
 // Mutations Resolvers
 const addObservation = async (parent, args, context, info) => {
@@ -21,21 +23,21 @@ const addObservation = async (parent, args, context, info) => {
         { new: true }
     );
     return advance;
-}
+};
 
 const addAdvance = async (parent, args, context, info) => {
     let advance = new Advances({
         ...args.input,
-        observations: ''
         });
     advance = await advance.save();
     return advance;
-}
+};
 
-const project = async (parent, args, context, info) => {
-    const project = await Projects.findById(parent.project_id);
-    return project;
-  };
+
+const enrollment = async (parent, args, context, info) => {
+    const enrollment = await Enrollments.findById(parent.enrollment_id);
+    return enrollment;
+};
 
 export default {
     Query: {
@@ -47,7 +49,6 @@ export default {
         addAdvance
     },
     Advance: {
-      project,
-    //   student,
+        enrollment
     }
 }

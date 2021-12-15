@@ -17,6 +17,7 @@ const enrollmentType = gql`
 const enums = gql`
   # Enum for status values
   enum EnrollmentStatus {
+    pending
     accepted
     rejected
   }
