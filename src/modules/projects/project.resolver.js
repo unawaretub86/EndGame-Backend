@@ -64,10 +64,6 @@ const updateProject = async (parent, args) => {
       generalObjective: args.input.generalObjective,
       specificObjectives: args.input.specificObjectives,
       budget: args.input.budget,
-      // startDate: args.input.startDate,
-      // endDate: args.input.endDate,
-      status: args.input.status,
-      phase: args.input.phase,
     },
     { new: true }
   );
