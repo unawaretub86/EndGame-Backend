@@ -15,7 +15,7 @@ import { USER_STATUS, ROLES } from "./user.module.js";
 
 // Queries
 const usersByRole = async (parent, args, { user, errorMessage }) => {
-  let userToFind = await Users.findById(args.input._id);
+  let userToFind = await Users.findById(args._id);
   if (!userToFind) {
     throw new Error("User doesn't exists");
   }
@@ -25,11 +25,12 @@ const usersByRole = async (parent, args, { user, errorMessage }) => {
   if (user.role != ROLES.admin) {
     throw new Error("Access denied");
   }
+
   return await Users.find({ role: args.role });
 };
 
 const userByStatus = async (parent, args, { user, errorMessage }) => {
-  let userToFind = await Users.findById(args.input._id);
+  let userToFind = await Users.findById(args._id);
   if (!userToFind) {
     throw new Error("User doesn't exists");
   }
@@ -65,7 +66,7 @@ const allStudents = async (parent, args, { user, errorMessage }) => {
 };
 
 const userById = async (parent, args, { user, errorMessage }) => {
-  let userToFind = await Users.findById(args.input._id);
+  let userToFind = await Users.findById(args._id);
   if (!userToFind) {
     throw new Error("User doesn't exists");
   }
@@ -75,6 +76,7 @@ const userById = async (parent, args, { user, errorMessage }) => {
   if (user.role == ROLES.student) {
     throw new Error(`Access denied`);
   }
+  console.log(args._id);
   return await Users.findById(args._id);
 };
 
@@ -152,7 +154,7 @@ const updateUser = async (parent, args, { user, errorMessage }) => {
 };
 
 const updateStateAdmin = async (parent, args, { user, errorMessage }) => {
-  let userToUpdate = await Users.findById(args.input._id);
+  let userToUpdate = await Users.findById(args.input.userById);
   if (!userToUpdate) {
     throw new Error("User doesn't exists");
   }
