@@ -56,7 +56,17 @@ const projectById = async (parent, args, { user, errorMessage }) => {
 };
 
 //pending solve issue date in sandbox
-const updateProject = async (parent, args) => {
+const updateProject = async (parent, args, { user, errorMessage }) => {
+  let projectToUpdate = await Projects.findById(args.input.projectById);
+  if (!projectToUpdate) {
+    throw new Error("Project doesn't exists");
+  }
+  if (!user) {
+    throw new Error(`${errorMessage} token error`);
+  }
+  if (user.role != ROLES.admin) {
+    throw new Error(`access denied`);
+  }
   const projectUpdated = await Projects.findOneAndUpdate(
     { _id: args.input.projectById },
     {
