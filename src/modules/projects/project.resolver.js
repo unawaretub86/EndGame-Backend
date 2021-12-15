@@ -97,6 +97,7 @@ const projectByLeaderId = async (parent, args) => {
   return projects;
 };
 
+
 const changePhaseProject = async (parent, args, { user, errorMessage }) => {
   if (!user) {
     throw new Error(`{${errorMessage} token error}`);
@@ -117,28 +118,21 @@ const changePhaseProject = async (parent, args, { user, errorMessage }) => {
   }
 };
 
-const activetProject = async (parent, args) => {
-  // TODO: Validate user.role === admin
+};
+
+const inactivateProject = async (parent, args, {user, errorMessage}) => {
+  
+  if(!user){
+    throw new Error(`${errorMessage}. Access error`);
+  }
+  if (user.role !== ROLES.admin) {
+    throw new Error("Access denied");
+  }
 
   let project = await Projects.findById(args.input._id);
 
   if (!project) {
     throw new Error("Project does not exist");
-  }
-
-  if (project.phase === "ended") {
-    throw new Error("Project ended");
-  }
-
-  if (!project.phase) {
-    project = await Projects.findOneAndUpdate(
-      { _id: args.input._id },
-      {
-        startDate: new Date(),
-        status: args.input.status,
-      },
-      { new: true }
-    );
   }
 
   project = await Projects.findOneAndUpdate(
@@ -148,9 +142,9 @@ const activetProject = async (parent, args) => {
     },
     { new: true }
   );
-
+  
   return project;
-};
+}
 
 export default {
   Query: {
@@ -166,7 +160,8 @@ export default {
   Mutation: {
     addProject,
     updateProject,
-    activetProject,
+    activateProject,
+    inactivateProject,
     changePhaseProject,
   },
 };
