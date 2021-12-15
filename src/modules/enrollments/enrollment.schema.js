@@ -17,7 +17,7 @@ const enrollmentType = gql`
 const enums = gql`
   # Enum for status values
   enum EnrollmentStatus {
-    acepted
+    accepted
     rejected
   }
 `;
@@ -59,10 +59,4 @@ const inputs = gql`
   }
 `;
 
-export default [
-  enrollmentType, 
-  enums, 
-  queries, 
-  mutations, 
-  inputs
-];
+export default [enrollmentType, enums, queries, mutations, inputs];
