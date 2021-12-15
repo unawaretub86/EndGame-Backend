@@ -15,7 +15,7 @@ const projectsSchema = new Schema({
     required: true,
   },
   budget: {
-    type: Number,
+    type: String,
     required: true,
   },
   startDate: {
@@ -34,7 +34,7 @@ const projectsSchema = new Schema({
   },
   phase: {
     type: String,
-    enum: ["started", "in progress", "ended"],
+    enum: ["started", "inProgress", "ended"],
   },
 });
 

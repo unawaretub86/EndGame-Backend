@@ -41,7 +41,7 @@ const startApolloServer = async (typeDefs, resolvers) => {
   const app = express();
   const httpServer = http.createServer(app);
   const server = new ApolloServer({
-    playground:true,
+    playground: true,
     typeDefs,
     resolvers,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
@@ -51,12 +51,12 @@ const startApolloServer = async (typeDefs, resolvers) => {
   server.applyMiddleware({
     app,
     path: `${server.graphqlPath}`,
-    playgroundPath: `${server.graphqlPath}/playground`
+    playgroundPath: `${server.graphqlPath}/playground`,
   });
   app.use(cors());
   // app.use(server.getMiddleware());
   await new Promise((resolve) =>
-  // eslint-disable-next-line no-undef
+    // eslint-disable-next-line no-undef
     httpServer.listen({ port: process.env.PORT }, resolve)
   );
   console.log(

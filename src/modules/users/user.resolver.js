@@ -1,11 +1,22 @@
+/* eslint-disable no-unused-vars */
 import { Users } from "./user.module.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { USER_STATUS, ROLES } from "./user.module.js";
 
+// funcion a terminar de verificar si el usuarioexiste
+// const userExist = async (parent, args, { user, errorMessage }) => {
+//   if (!user) {
+//     throw new Error(`${errorMessage} that user does't exist`);
+//   }
+//   console.log(user.name);
+//   return await Users.find();
+// };
+
 const allUsers = async (parent, args, { user, errorMessage }) => {
   if (!user) {
-    throw new Error(`${errorMessage} input error`);
+    console.log(user);
+    throw new Error(`${errorMessage} error that user doesn't exists`);
   }
   if (user.role !== ROLES.admin) {
     throw new Error("Access denied");
@@ -33,15 +44,14 @@ const registerUser = async (parent, args) => {
   });
   console.log(args.input);
   const isUserSaved = await user.save();
-  if (!isUserSaved){
-    throw new Error("User not saved")
+  if (!isUserSaved) {
+    throw new Error("User not saved");
   }
-  return "Ok!"
+  return "Ok!";
 };
 
 //login, returns token
 const login = async (parent, args) => {
-
   // Validate user's existence
   const user = await Users.findOne({ email: args.input.email });
   if (!user) {
@@ -55,58 +65,64 @@ const login = async (parent, args) => {
   }
 
   // Validate status
-  if (user.status !== USER_STATUS.authorized){
-    throw new Error("User unauthorized")
+  if (user.status !== USER_STATUS.authorized) {
+    throw new Error("User unauthorized");
   }
 
   // Token creation
   const token = await jwt.sign(
-    { 
+    {
       _id: user._id,
       name: user.name,
       lastName: user.lastName,
       email: user.email,
       role: user.role,
-      status: user.status
-
-      // eslint-disable-next-line no-undef
-    }, process.env.SECRET, {
-    expiresIn: "24h",
-  });
+      status: user.status,
+    },
+    // eslint-disable-next-line no-undef
+    process.env.SECRET,
+    {
+      expiresIn: "24h",
+    }
+  );
   return token;
 };
 
 //Queries and mutations
 
 const updateUser = async (parent, args, { user, errorMessage }) => {
-
-  if (!user){
+  if (!user) {
     throw new Error(`${errorMessage} token error`);
   }
 
   // const userToUpdate = await Users.findById(user._id);
   // console.log(String(user._id));
   // console.log(String(userToUpdate._id));
-  // if (String(userToUpdate.email) === String(args.input.email)){
+  // if (String(userToUpdate.email) === String(args.input.email)) {
   //   console.log("user valid");
   // }
 
   let userUpdated = await Users.findOneAndUpdate(
-    { _id: args.input.userById },
+    { _id: user._id },
     {
       name: args.input.name,
       email: args.input.email,
       documentId: args.input.documentId,
       lastName: args.input.lastName,
       password: args.input.password,
-      fullName: args.input.fullName,
     },
     { new: true }
   );
   return userUpdated;
 };
 
-const updateStateAdmin = async (parent, args) => {
+const updateStateAdmin = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    throw new Error(`${errorMessage} that user doesn't exist`);
+  }
+  if (user.role !== ROLES.admin) {
+    throw new Error("Access denied");
+  }
   let userUpdatedByAdmin = await Users.findOneAndUpdate(
     { _id: args.input.userById },
     {
@@ -114,7 +130,7 @@ const updateStateAdmin = async (parent, args) => {
     },
     { new: true }
   );
-  return userUpdatedByAdmin;
+  return await userUpdatedByAdmin;
 };
 
 const updateStateLeader = async (parent, args) => {
@@ -144,7 +160,7 @@ export default {
     userById,
     usersByRole,
     userByStatus,
-    allStudents
+    allStudents,
   },
   Mutation: {
     registerUser,

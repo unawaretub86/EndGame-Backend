@@ -1,23 +1,51 @@
-// import moduleName from "graphql-tools";
-import { 
-  Projects,
-  PHASE,
-  Users,
-  ROLES
-} from "./project.module.js";
+import { Projects } from "./project.module.js";
+import { Users } from "../users/user.module.js";
+import { ROLES } from "../users/user.constans.js";
+import { PROJECT_STATUS } from "../projects/project.constans.js";
 
-const allProjects = async () => {
-  const projects = await Projects.find();
-  return projects;
+// eslint-disable-next-line no-unused-vars
+const userExist = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    throw new Error(`${errorMessage} that user does't exist`);
+  }
+  console.log(user.name);
+  return user;
 };
 
-const addProject = async (parent, args) => {
-  let project = new Projects(args.input);
+const allProjects = async (parent, args, { user, errorMessage }) => {
+  userExist(user);
+  if (user.role !== ROLES.admin) {
+    throw new Error(`${errorMessage} Access denied `);
+  }
+  return await Projects.find();
+};
+
+// const setEndedProject = async (parent, args {user, errorMessage}) =>{
+//   if(!user )
+// }
+
+const addProject = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    throw new Error(`${errorMessage} token error`);
+  }
+  if (user.role != ROLES.admin) {
+    throw new Error(`access denied`);
+  }
+  let project = new Projects({
+    ...args.input,
+    status: PROJECT_STATUS.inactive,
+  });
   project = await project.save();
   return project;
 };
 
-const projectById = async (parent, args) => {
+const projectById = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    throw new Error(`${errorMessage} token error`);
+  }
+  if (user.role != ROLES.admin) {
+    throw new Error(`access denied`);
+  }
   const project = await Projects.findById(args._id);
   return project;
 };
@@ -69,14 +97,28 @@ const projectByLeaderId = async (parent, args) => {
   return projects;
 };
 
-const activetProject = async (parent, args, {user, errorMessage}) => {
-  
+const changePhaseProject = async (parent, args, { user, errorMessage }) => {
   if (!user) {
-    throw new Error(`${errorMessage}. Access error`);
+    throw new Error(`{${errorMessage} token error}`);
   }
   if (user.role !== ROLES.admin) {
     throw new Error("Access denied");
   }
+  if (args.input.phase === "ended" && args.phase === "inProgress") {
+    let projectUpdated = await Projects.findOneAndUpdate(
+      { _id: args.input._id },
+      {
+        status: args.input.status,
+        endDate: new Date(),
+      },
+      { new: true }
+    );
+    return projectUpdated;
+  }
+};
+
+const activetProject = async (parent, args) => {
+  // TODO: Validate user.role === admin
 
   let project = await Projects.findById(args.input._id);
 
@@ -94,12 +136,9 @@ const activetProject = async (parent, args, {user, errorMessage}) => {
       {
         startDate: new Date(),
         status: args.input.status,
-        phase: PHASE.started,
       },
       { new: true }
     );
-
-    return project;
   }
 
   project = await Projects.findOneAndUpdate(
@@ -128,5 +167,6 @@ export default {
     addProject,
     updateProject,
     activetProject,
+    changePhaseProject,
   },
 };
