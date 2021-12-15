@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Users } from "./user.module.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
@@ -77,9 +78,8 @@ const login = async (parent, args) => {
       email: user.email,
       role: user.role,
       status: user.status,
-
-      // eslint-disable-next-line no-undef
     },
+    // eslint-disable-next-line no-undef
     process.env.SECRET,
     {
       expiresIn: "24h",
