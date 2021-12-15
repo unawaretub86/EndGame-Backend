@@ -148,6 +148,9 @@ const updateStateLeader = async (parent, args, { user, errorMessage }) => {
   if (user.role != ROLES.leader) {
     throw new Error("Access denied");
   }
+  if (userToUpdate.role != ROLES.student) {
+    throw new Error("Access denied");
+  }
   let userUpdatedByLeader = await Users.findOneAndUpdate(
     { _id: args.input.userById },
     {

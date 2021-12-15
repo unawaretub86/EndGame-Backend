@@ -12,7 +12,7 @@ const enrollmentsSchema = new Schema({
   },
   status: {
     type: String,
-    enum: ["acepted", "rejected"],
+    enum: ["accepted", "rejected"],
   },
   enrollmentDate: {
     type: Date,
