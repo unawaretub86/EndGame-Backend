@@ -1,7 +1,7 @@
 import { Projects } from "./project.module.js";
 import { Users } from "../users/user.module.js";
-import { ROLES } from "../users/user.constans.js";
-import { PROJECT_STATUS } from "../projects/project.constans.js";
+import { ROLES } from "../users/user.constants.js";
+import { PROJECT_STATUS } from "../project.constants.js";
 
 // eslint-disable-next-line no-unused-vars
 const userExist = async (parent, args, { user, errorMessage }) => {
@@ -98,7 +98,6 @@ const projectByLeaderId = async (parent, args) => {
   return projects;
 };
 
-
 const changePhaseProject = async (parent, args, { user, errorMessage }) => {
   let project = await Projects.findById(args.input._id);
 
@@ -128,11 +127,8 @@ const changePhaseProject = async (parent, args, { user, errorMessage }) => {
   }
 };
 
-};
-
-const inactivateProject = async (parent, args, {user, errorMessage}) => {
-  
-  if(!user){
+const inactivateProject = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
     throw new Error(`${errorMessage}. Access error`);
   }
   if (user.role !== ROLES.admin) {
@@ -152,9 +148,9 @@ const inactivateProject = async (parent, args, {user, errorMessage}) => {
     },
     { new: true }
   );
-  
+
   return project;
-}
+};
 
 export default {
   Query: {
@@ -170,7 +166,6 @@ export default {
   Mutation: {
     addProject,
     updateProject,
-    activateProject,
     inactivateProject,
     changePhaseProject,
   },

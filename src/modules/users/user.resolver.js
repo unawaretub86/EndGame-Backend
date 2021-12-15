@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { USER_STATUS, ROLES } from "./user.module.js";
 
-// funcion a terminar de verificar si el usuarioexiste
+// function to finish about verify if userExists
 // const userExist = async (parent, args, { user, errorMessage }) => {
 //   if (!user) {
 //     throw new Error(`${errorMessage} that user does't exist`);
