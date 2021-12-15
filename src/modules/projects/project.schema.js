@@ -64,7 +64,7 @@ const mutations = gql`
   }
 
   type Mutation {
-    activetProject(input: ActiveProjectInput!): Project!
+    activateProject(input: ActivateProjectInput!): Project!
   }
 
   type Mutation {
@@ -93,7 +93,7 @@ const inputs = gql`
     phase: Phase
   }
 
-  input ActiveProjectInput {
+  input ActivateProjectInput {
     _id: ID!
     status: projectStatus!
   }

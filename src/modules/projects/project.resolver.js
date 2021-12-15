@@ -69,7 +69,7 @@ const projectByLeaderId = async (parent, args) => {
   return projects;
 };
 
-const activetProject = async (parent, args, {user, errorMessage}) => {
+const activateProject = async (parent, args, {user, errorMessage}) => {
   
   if (!user) {
     throw new Error(`${errorMessage}. Access error`);
@@ -153,7 +153,7 @@ export default {
   Mutation: {
     addProject,
     updateProject,
-    activetProject,
+    activateProject,
     inactivateProject,
   },
 };
