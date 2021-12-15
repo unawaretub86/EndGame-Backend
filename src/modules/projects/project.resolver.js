@@ -2,7 +2,8 @@
 import { 
   Projects,
   PHASE,
-  Users
+  Users,
+  ROLES
 } from "./project.module.js";
 
 const allProjects = async () => {
@@ -68,8 +69,14 @@ const projectByLeaderId = async (parent, args) => {
   return projects;
 };
 
-const activetProject = async (parent, args) => {
-  // TODO: Validate user.role === admin
+const activetProject = async (parent, args, {user, errorMessage}) => {
+  
+  if (!user) {
+    throw new Error(`${errorMessage}. Access error`);
+  }
+  if (user.role !== ROLES.admin) {
+    throw new Error("Access denied");
+  }
 
   let project = await Projects.findById(args.input._id);
 
