@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server';
+import { gql } from "apollo-server";
 
 const advanceType = gql`
   # Advance
@@ -21,6 +21,11 @@ const queries = gql`
   # Return advance by id
   type Query {
     advaceById(_id: ID!): Advance!
+  }
+
+  # Return all Advances By Student Id
+  type Query {
+    allAdvancesByStudentId: [Advance]
   }
 `;
 
@@ -49,9 +54,4 @@ const inputs = gql`
   }
 `;
 
-export default [
-    queries,
-    advanceType,
-    mutations,
-    inputs
-];
+export default [queries, advanceType, mutations, inputs];
