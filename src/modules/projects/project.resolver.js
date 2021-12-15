@@ -36,7 +36,6 @@ const addProject = async (parent, args, { user, errorMessage }) => {
     status: PROJECT_STATUS.inactive,
   });
   project = await project.save();
-  console.log(project);
   return project;
 };
 
