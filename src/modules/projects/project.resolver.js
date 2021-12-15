@@ -113,6 +113,32 @@ const activetProject = async (parent, args, {user, errorMessage}) => {
   return project;
 };
 
+const inactivateProject = async (parent, args, {user, errorMessage}) => {
+  
+  if(!user){
+    throw new Error(`${errorMessage}. Access error`);
+  }
+  if (user.role !== ROLES.admin) {
+    throw new Error("Access denied");
+  }
+
+  let project = await Projects.findById(args.input._id);
+
+  if (!project) {
+    throw new Error("Project does not exist");
+  }
+
+  project = await Projects.findOneAndUpdate(
+    { _id: args.input._id },
+    {
+      status: args.input.status,
+    },
+    { new: true }
+  );
+  
+  return project;
+}
+
 export default {
   Query: {
     allProjects,
@@ -128,5 +154,6 @@ export default {
     addProject,
     updateProject,
     activetProject,
+    inactivateProject,
   },
 };

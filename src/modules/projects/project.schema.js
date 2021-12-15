@@ -66,6 +66,10 @@ const mutations = gql`
   type Mutation {
     activetProject(input: ActiveProjectInput!): Project!
   }
+
+  type Mutation {
+    inactivateProject(input: InactivateProjectInput!): Project!
+  }
 `;
 
 const inputs = gql`
@@ -90,6 +94,11 @@ const inputs = gql`
   }
 
   input ActiveProjectInput {
+    _id: ID!
+    status: projectStatus!
+  }
+
+  input InactivateProjectInput {
     _id: ID!
     status: projectStatus!
   }
