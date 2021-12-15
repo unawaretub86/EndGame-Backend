@@ -7,16 +7,19 @@ import {
 } from "./project.module.js";
 
 // eslint-disable-next-line no-unused-vars
-const userExist = async (parent, args, { user, errorMessage }) => {
-  if (!user) {
-    throw new Error(`${errorMessage} that user does't exist`);
-  }
-  console.log(user.name);
-  return user;
-};
+// const userExist = async (parent, args, { user, errorMessage }) => {
+//   if (!user) {
+//     throw new Error(`${errorMessage} that user does't exist`);
+//   }
+//   console.log(user.name);
+//   return user;
+// };
 
 const allProjects = async (parent, args, { user, errorMessage }) => {
-  userExist(user);
+  if (!user) {
+    console.log(user);
+    throw new Error(`${errorMessage} token error`);
+  }
   if (user.role !== ROLES.admin) {
     throw new Error(`${errorMessage} Access denied `);
   }

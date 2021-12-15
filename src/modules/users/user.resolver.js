@@ -15,10 +15,6 @@ import { USER_STATUS, ROLES } from "./user.module.js";
 
 // Queries
 const usersByRole = async (parent, args, { user, errorMessage }) => {
-  let userToFind = await Users.findById(args._id);
-  if (!userToFind) {
-    throw new Error("User doesn't exists");
-  }
   if (!user) {
     throw new Error(`${errorMessage} token error`);
   }
@@ -30,10 +26,6 @@ const usersByRole = async (parent, args, { user, errorMessage }) => {
 };
 
 const userByStatus = async (parent, args, { user, errorMessage }) => {
-  let userToFind = await Users.findById(args._id);
-  if (!userToFind) {
-    throw new Error("User doesn't exists");
-  }
   if (!user) {
     throw new Error(`${errorMessage} token error`);
   }
@@ -146,7 +138,7 @@ const updateUser = async (parent, args, { user, errorMessage }) => {
       email: args.input.email,
       documentId: args.input.documentId,
       lastName: args.input.lastName,
-      password: args.input.password,
+      password: await bcrypt.hash(args.input.password, 12),
     },
     { new: true }
   );
@@ -186,7 +178,7 @@ const updateStateLeader = async (parent, args, { user, errorMessage }) => {
     throw new Error("Access denied");
   }
   if (userToUpdate.role != ROLES.student) {
-    throw new Error("Access denied");
+    throw new Error("Access denied that user must be a student");
   }
   let userUpdatedByLeader = await Users.findOneAndUpdate(
     { _id: args.input.userById },
