@@ -40,13 +40,18 @@ const addObservation = async (parent, args, { user, errorMessage }) => {
   return advance;
 };
 
-const addAdvance = async (parent, args, context, info) => {
+const addAdvance = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    throw new Error(`${errorMessage} token error`);
+  }
+  if (user.role != ROLES.student) {
+    throw new Error("Access denied");
+  }
   let advance = new Advances({
     ...args.input,
     observations: "",
   });
-  advance = await advance.save();
-  return advance;
+  return await advance.save();
 };
 
 const project = async (parent, args, context, info) => {
