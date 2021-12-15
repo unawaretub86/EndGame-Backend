@@ -1,7 +1,10 @@
 /* eslint-disable no-unused-vars */
-import { Advances } from "./advance.module.js";
-import { Projects } from "../projects/project.module.js";
+import {
+    Advances, 
+    Enrollments
+} from "./advance.module.js"
 import { ROLES } from "../users/user.module.js";
+
 
 // Queries Resolvers
 const allAdvances = async (parent, args, context, info) => {
@@ -10,8 +13,8 @@ const allAdvances = async (parent, args, context, info) => {
 };
 
 const advaceById = async (parent, args, context, info) => {
-  const advance = await Advances.findById(args._id);
-  return advance;
+    const advance = await Advances.findById(args._id);
+    return advance;
 };
 
 const allAdvancesByStudentId = async (parent, args, { user, errorMessage }) => {
@@ -49,27 +52,27 @@ const addAdvance = async (parent, args, { user, errorMessage }) => {
   }
   let advance = new Advances({
     ...args.input,
-    observations: "",
   });
-  return await advance.save();
+  advance = await advance.save();
+  return advance;
 };
 
-const project = async (parent, args, context, info) => {
-  const project = await Projects.findById(parent.project_id);
-  return project;
+
+const enrollment = async (parent, args, context, info) => {
+    const enrollment = await Enrollments.findById(parent.enrollment_id);
+    return enrollment;
 };
 
 export default {
-  Query: {
-    allAdvances,
-    advaceById,
-  },
-  Mutation: {
-    addObservation,
-    addAdvance,
-  },
-  Advance: {
-    project,
-    //   student,
-  },
-};
+    Query: {
+        allAdvances,
+        advaceById
+    },
+    Mutation: {
+        addObservation,
+        addAdvance
+    },
+    Advance: {
+        enrollment
+    }
+}
