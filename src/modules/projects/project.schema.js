@@ -7,7 +7,7 @@ const projectType = gql`
     name: String!
     generalObjective: String!
     specificObjectives: [String]!
-    budget: Float!
+    budget: String
     startDate: String
     endDate: String
     leader_id: ID!
@@ -70,6 +70,10 @@ const mutations = gql`
   type Mutation {
     inactivateProject(input: InactivateProjectInput!): Project!
   }
+
+  type Mutation {
+    changePhaseProject(input: changePhaseInput!): Project!
+  }
 `;
 
 const inputs = gql`
@@ -77,7 +81,7 @@ const inputs = gql`
     name: String!
     generalObjective: String!
     specificObjectives: [String]!
-    budget: Float!
+    budget: String!
     leader_id: ID!
   }
 
@@ -86,7 +90,7 @@ const inputs = gql`
     name: String
     generalObjective: String
     specificObjectives: [String]
-    budget: Float
+    budget: String
     startDate: String
     endDate: String
     status: projectStatus
@@ -101,6 +105,11 @@ const inputs = gql`
   input InactivateProjectInput {
     _id: ID!
     status: projectStatus!
+  }
+
+  input changePhaseInput {
+    _id: ID!
+    Phase: Phase!
   }
 `;
 
