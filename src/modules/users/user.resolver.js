@@ -173,7 +173,7 @@ const updateStateAdmin = async (parent, args, { user, errorMessage }) => {
 };
 
 const updateStateLeader = async (parent, args, { user, errorMessage }) => {
-  let userToUpdate = await Users.findById(args.input._id);
+  let userToUpdate = await Users.findById(args.input.userById);
   if (!userToUpdate) {
     throw new Error("User doesn't exists");
   }
