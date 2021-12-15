@@ -1,7 +1,10 @@
-import { Projects } from "./project.module.js";
-import { Users } from "../users/user.module.js";
-import { ROLES } from "../users/user.constants.js";
-import { PROJECT_STATUS } from "../project.constants.js";
+import {
+  Projects,
+  PROJECT_STATUS,
+  PHASES,
+  Users,
+  ROLES,
+} from "./project.module.js";
 
 // eslint-disable-next-line no-unused-vars
 const userExist = async (parent, args, { user, errorMessage }) => {
@@ -127,6 +130,49 @@ const changePhaseProject = async (parent, args, { user, errorMessage }) => {
   }
 };
 
+const activateProject = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    throw new Error(`${errorMessage}. Access error`);
+  }
+  if (user.role !== ROLES.admin) {
+    throw new Error("Access denied");
+  }
+
+  let project = await Projects.findById(args.input._id);
+
+  if (!project) {
+    throw new Error("Project does not exist");
+  }
+
+  if (project.phase === "ended") {
+    throw new Error("Project ended");
+  }
+
+  if (!project.phase) {
+    project = await Projects.findOneAndUpdate(
+      { _id: args.input._id },
+      {
+        startDate: new Date(),
+        status: args.input.status,
+        phase: PHASES.started,
+      },
+      { new: true }
+    );
+
+    return project;
+  }
+
+  project = await Projects.findOneAndUpdate(
+    { _id: args.input._id },
+    {
+      status: args.input.status,
+    },
+    { new: true }
+  );
+
+  return project;
+};
+
 const inactivateProject = async (parent, args, { user, errorMessage }) => {
   if (!user) {
     throw new Error(`${errorMessage}. Access error`);
@@ -165,8 +211,9 @@ export default {
   },
   Mutation: {
     addProject,
-    updateProject,
-    inactivateProject,
+    activateProject,
     changePhaseProject,
+    inactivateProject,
+    updateProject,
   },
 };
