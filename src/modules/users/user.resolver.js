@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { USER_STATUS, ROLES } from "./user.module.js";
 
-// funcion a terminar de verificar si el usuarioexiste
+// function to finish about verify if userExists
 // const userExist = async (parent, args, { user, errorMessage }) => {
 //   if (!user) {
 //     throw new Error(`${errorMessage} that user does't exist`);
@@ -13,10 +13,31 @@ import { USER_STATUS, ROLES } from "./user.module.js";
 //   return await Users.find();
 // };
 
+// Queries
+const usersByRole = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    throw new Error(`${errorMessage} token error`);
+  }
+  if (user.role != ROLES.admin) {
+    throw new Error("Access denied");
+  }
+  return await Users.find({ role: args.role });
+};
+
+const userByStatus = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    throw new Error(`${errorMessage} token error`);
+  }
+  if (user.role == ROLES.student) {
+    throw new Error("Access denied");
+  }
+  return await Users.find({ status: args.status });
+};
+
 const allUsers = async (parent, args, { user, errorMessage }) => {
   if (!user) {
     console.log(user);
-    throw new Error(`${errorMessage} error that user doesn't exists`);
+    throw new Error(`${errorMessage} token error`);
   }
   if (user.role !== ROLES.admin) {
     throw new Error("Access denied");
@@ -24,16 +45,28 @@ const allUsers = async (parent, args, { user, errorMessage }) => {
   return await Users.find();
 };
 
-const allStudents = async (parent, args) => {
-  //Todo: Validate that the user who required this query is a leader
-
+const allStudents = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    console.log(user);
+    throw new Error(`${errorMessage} token error`);
+  }
+  if (user.role !== ROLES.leader) {
+    throw new Error("Access denied");
+  }
   return await Users.find({ role: ROLES.student });
 };
 
-const userById = async (parent, args) => {
-  const user = await Users.findById(args._id);
-  return user;
+const userById = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    throw new Error(`${errorMessage} token error`);
+  }
+  if (user.role == ROLES.student) {
+    throw new Error(`Access denied`);
+  }
+  return await Users.findById(args._id);
 };
+
+//Mutations
 
 // Register
 const registerUser = async (parent, args) => {
@@ -88,20 +121,10 @@ const login = async (parent, args) => {
   return token;
 };
 
-//Queries and mutations
-
 const updateUser = async (parent, args, { user, errorMessage }) => {
   if (!user) {
     throw new Error(`${errorMessage} token error`);
   }
-
-  // const userToUpdate = await Users.findById(user._id);
-  // console.log(String(user._id));
-  // console.log(String(userToUpdate._id));
-  // if (String(userToUpdate.email) === String(args.input.email)) {
-  //   console.log("user valid");
-  // }
-
   let userUpdated = await Users.findOneAndUpdate(
     { _id: user._id },
     {
@@ -117,15 +140,15 @@ const updateUser = async (parent, args, { user, errorMessage }) => {
 };
 
 const updateStateAdmin = async (parent, args, { user, errorMessage }) => {
+  let userToUpdate = await Users.findById(args.input._id);
+  if (!userToUpdate) {
+    throw new Error("User doesn't exists");
+  }
   if (!user) {
     throw new Error(`${errorMessage} token error`);
   }
   if (user.role !== ROLES.admin) {
     throw new Error("Access denied");
-  }
-  let userToUpdate = await Users.findById(args.input._id);
-  if (!userToUpdate) {
-    throw new Error("User doesn't exists");
   }
   let userUpdatedByAdmin = await Users.findOneAndUpdate(
     { _id: args.input.userById },
@@ -161,29 +184,19 @@ const updateStateLeader = async (parent, args, { user, errorMessage }) => {
   return userUpdatedByLeader;
 };
 
-const usersByRole = async (parent, args) => {
-  const users = await Users.find({ role: args.role });
-  return users;
-};
-
-const userByStatus = async (parent, args) => {
-  const users = await Users.find({ status: args.status });
-  return users;
-};
-
 export default {
   Query: {
     allUsers,
     userById,
+    allStudents,
     usersByRole,
     userByStatus,
-    allStudents,
   },
   Mutation: {
+    login,
     registerUser,
     updateUser,
     updateStateAdmin,
     updateStateLeader,
-    login,
   },
 };

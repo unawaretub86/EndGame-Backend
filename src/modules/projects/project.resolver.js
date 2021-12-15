@@ -1,9 +1,9 @@
-import { 
+import {
   Projects,
   PROJECT_STATUS,
   PHASES,
   Users,
-  ROLES 
+  ROLES,
 } from "./project.module.js";
 
 // eslint-disable-next-line no-unused-vars
@@ -101,7 +101,6 @@ const projectByLeaderId = async (parent, args) => {
   return projects;
 };
 
-
 const changePhaseProject = async (parent, args, { user, errorMessage }) => {
   let project = await Projects.findById(args.input._id);
 
@@ -131,8 +130,7 @@ const changePhaseProject = async (parent, args, { user, errorMessage }) => {
   }
 };
 
-const activateProject = async (parent, args, {user, errorMessage}) => {
-  
+const activateProject = async (parent, args, { user, errorMessage }) => {
   if (!user) {
     throw new Error(`${errorMessage}. Access error`);
   }
@@ -175,9 +173,8 @@ const activateProject = async (parent, args, {user, errorMessage}) => {
   return project;
 };
 
-const inactivateProject = async (parent, args, {user, errorMessage}) => {
-  
-  if(!user){
+const inactivateProject = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
     throw new Error(`${errorMessage}. Access error`);
   }
   if (user.role !== ROLES.admin) {
@@ -197,7 +194,7 @@ const inactivateProject = async (parent, args, {user, errorMessage}) => {
     },
     { new: true }
   );
-  
+
   return project;
 };
 
@@ -214,9 +211,9 @@ export default {
   },
   Mutation: {
     addProject,
-    updateProject,
     activateProject,
-    inactivateProject,
     changePhaseProject,
+    inactivateProject,
+    updateProject,
   },
 };
