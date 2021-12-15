@@ -1,9 +1,9 @@
-import { 
+import {
   Projects,
   PROJECT_STATUS,
   PHASES,
   Users,
-  ROLES 
+  ROLES,
 } from "./project.module.js";
 
 // eslint-disable-next-line no-unused-vars
@@ -38,6 +38,7 @@ const addProject = async (parent, args, { user, errorMessage }) => {
     ...args.input,
     leader_id: user._id,
     status: PROJECT_STATUS.inactive,
+    startDate: new Date(),
   });
   project = await project.save();
   return project;
@@ -55,7 +56,17 @@ const projectById = async (parent, args, { user, errorMessage }) => {
 };
 
 //pending solve issue date in sandbox
-const updateProject = async (parent, args) => {
+const updateProject = async (parent, args, { user, errorMessage }) => {
+  let projectToUpdate = await Projects.findById(args.input.projectById);
+  if (!projectToUpdate) {
+    throw new Error("Project doesn't exists");
+  }
+  if (!user) {
+    throw new Error(`${errorMessage} token error`);
+  }
+  if (user.role != ROLES.admin) {
+    throw new Error(`access denied`);
+  }
   const projectUpdated = await Projects.findOneAndUpdate(
     { _id: args.input.projectById },
     {
@@ -63,10 +74,6 @@ const updateProject = async (parent, args) => {
       generalObjective: args.input.generalObjective,
       specificObjectives: args.input.specificObjectives,
       budget: args.input.budget,
-      // startDate: args.input.startDate,
-      // endDate: args.input.endDate,
-      status: args.input.status,
-      phase: args.input.phase,
     },
     { new: true }
   );
@@ -101,7 +108,6 @@ const projectByLeaderId = async (parent, args) => {
   return projects;
 };
 
-
 const changePhaseProject = async (parent, args, { user, errorMessage }) => {
   let project = await Projects.findById(args.input._id);
 
@@ -131,8 +137,7 @@ const changePhaseProject = async (parent, args, { user, errorMessage }) => {
   }
 };
 
-const activateProject = async (parent, args, {user, errorMessage}) => {
-  
+const activateProject = async (parent, args, { user, errorMessage }) => {
   if (!user) {
     throw new Error(`${errorMessage}. Access error`);
   }
@@ -175,9 +180,8 @@ const activateProject = async (parent, args, {user, errorMessage}) => {
   return project;
 };
 
-const inactivateProject = async (parent, args, {user, errorMessage}) => {
-  
-  if(!user){
+const inactivateProject = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
     throw new Error(`${errorMessage}. Access error`);
   }
   if (user.role !== ROLES.admin) {
@@ -197,7 +201,7 @@ const inactivateProject = async (parent, args, {user, errorMessage}) => {
     },
     { new: true }
   );
-  
+
   return project;
 };
 
@@ -214,9 +218,9 @@ export default {
   },
   Mutation: {
     addProject,
-    updateProject,
     activateProject,
-    inactivateProject,
     changePhaseProject,
+    inactivateProject,
+    updateProject,
   },
 };
