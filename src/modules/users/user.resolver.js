@@ -15,6 +15,10 @@ import { USER_STATUS, ROLES } from "./user.module.js";
 
 // Queries
 const usersByRole = async (parent, args, { user, errorMessage }) => {
+  let userToFind = await Users.findById(args.input._id);
+  if (!userToFind) {
+    throw new Error("User doesn't exists");
+  }
   if (!user) {
     throw new Error(`${errorMessage} token error`);
   }
@@ -25,6 +29,10 @@ const usersByRole = async (parent, args, { user, errorMessage }) => {
 };
 
 const userByStatus = async (parent, args, { user, errorMessage }) => {
+  let userToFind = await Users.findById(args.input._id);
+  if (!userToFind) {
+    throw new Error("User doesn't exists");
+  }
   if (!user) {
     throw new Error(`${errorMessage} token error`);
   }
@@ -57,6 +65,10 @@ const allStudents = async (parent, args, { user, errorMessage }) => {
 };
 
 const userById = async (parent, args, { user, errorMessage }) => {
+  let userToFind = await Users.findById(args.input._id);
+  if (!userToFind) {
+    throw new Error("User doesn't exists");
+  }
   if (!user) {
     throw new Error(`${errorMessage} token error`);
   }
