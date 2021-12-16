@@ -51,9 +51,9 @@ const projectById = async (parent, args, { user, errorMessage }) => {
   if (!user) {
     throw new Error(`${errorMessage} token error`);
   }
-  if (user.role != ROLES.admin) {
-    throw new Error(`access denied`);
-  }
+  //if (user.role != ROLES.admin) {
+  //  throw new Error(`access denied`);
+  //}
   const project = await Projects.findById(args._id);
   return project;
 };
@@ -112,7 +112,7 @@ const projectByLeaderId = async (parent, args) => {
 };
 
 const changePhaseProject = async (parent, args, { user, errorMessage }) => {
-  let project = await Projects.findById(args.input._id);
+  let project = await Projects.findById(args._id);
 
   if (!project) {
     throw new Error("Project does not exist");
