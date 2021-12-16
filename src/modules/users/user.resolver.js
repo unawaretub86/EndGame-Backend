@@ -65,9 +65,6 @@ const userById = async (parent, args, { user, errorMessage }) => {
   if (!user) {
     throw new Error(`${errorMessage} token error`);
   }
-  if (user.role == ROLES.student) {
-    throw new Error(`Access denied`);
-  }
   console.log(args._id);
   return await Users.findById(args._id);
 };
