@@ -146,7 +146,6 @@ const changePhaseProject = async (parent, args, { user, errorMessage }) => {
   if (!project) {
     throw new Error("Project does not exist");
   }
-
   if (project.phase === "ended") {
     throw new Error("Project ended");
   }
@@ -156,12 +155,13 @@ const changePhaseProject = async (parent, args, { user, errorMessage }) => {
   if (user.role !== ROLES.admin) {
     throw new Error("Access denied");
   }
-  if (args.phase === "inProgress") {
+
+  if (project.phase === "inProgress") {
     let projectUpdated = await Projects.findOneAndUpdate(
       { _id: args.input._id },
       {
-        phase: PHASES.inactive,
-        status: PROJECT_STATUS.ended,
+        phase: PHASES.ended,
+        status: PROJECT_STATUS.inactive,
         endDate: new Date(),
       },
       { new: true }
