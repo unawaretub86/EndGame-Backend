@@ -1,9 +1,11 @@
+import Enrollements from "../enrollments/enrollment.model.js";
 import {
   Projects,
   PROJECT_STATUS,
   PHASES,
   Users,
   ROLES,
+  Enrollments
 } from "./project.module.js";
 
 // eslint-disable-next-line no-unused-vars
@@ -114,15 +116,14 @@ const projectByStatus = async (parent, args, { user, errorMessage }) => {
 
 // returns a project's list where user is leader of those
 const projectByLeaderId = async (parent, args, { user, errorMessage }) => {
-  const leader = await Users.findById(args.leader_id);
   if (!user) {
     throw new Error(`${errorMessage} token error`);
   }
-  if (!leader) {
-    throw new Error("Leader does not exist");
+  if(user.role !== ROLES.leader){
+    throw new Error("Access denied")
   }
 
-  const projects = await Projects.find({ leader_id: leader._id });
+  const projects = await Projects.find({ leader_id: user._id });
 
   return projects;
 };
@@ -224,6 +225,11 @@ const inactivateProject = async (parent, args, { user, errorMessage }) => {
   return project;
 };
 
+const enrollments = async (parent, args) => {
+  let enrollments = await Enrollements.find({project_id: parent._id});
+  return enrollments;
+}
+
 export default {
   Query: {
     allProjects,
@@ -234,6 +240,7 @@ export default {
   },
   Project: {
     leader,
+    enrollments,
   },
   Mutation: {
     addProject,
