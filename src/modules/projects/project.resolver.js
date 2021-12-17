@@ -5,7 +5,7 @@ import {
   PHASES,
   Users,
   ROLES,
-  Enrollments
+  Enrollments,
 } from "./project.module.js";
 
 // eslint-disable-next-line no-unused-vars
@@ -96,10 +96,12 @@ const projectByPhase = async (parent, args, { user, errorMessage }) => {
   if (!user) {
     throw new Error(`${errorMessage} token error`);
   }
+  const projectByPhase = await Projects.find({ phase: args.phase });
+
   if (!projectByPhase) {
     throw new Error(`${errorMessage} project doesn't exists`);
   }
-  const projectByPhase = await Projects.find({ phase: args.phase });
+
   return projectByPhase;
 };
 
@@ -107,10 +109,11 @@ const projectByStatus = async (parent, args, { user, errorMessage }) => {
   if (!user) {
     throw new Error(`${errorMessage} token error`);
   }
+  const projectByStatus = await Projects.find({ status: args.status });
+
   if (!projectByStatus) {
     throw new Error(`${errorMessage} project doesn't exists`);
   }
-  const projectByStatus = await Projects.find({ status: args.status });
   return projectByStatus;
 };
 
@@ -119,8 +122,8 @@ const projectByLeaderId = async (parent, args, { user, errorMessage }) => {
   if (!user) {
     throw new Error(`${errorMessage} token error`);
   }
-  if(user.role !== ROLES.leader){
-    throw new Error("Access denied")
+  if (user.role !== ROLES.leader) {
+    throw new Error("Access denied");
   }
 
   const projects = await Projects.find({ leader_id: user._id });
@@ -226,9 +229,9 @@ const inactivateProject = async (parent, args, { user, errorMessage }) => {
 };
 
 const enrollments = async (parent, args) => {
-  let enrollments = await Enrollements.find({project_id: parent._id});
+  let enrollments = await Enrollements.find({ project_id: parent._id });
   return enrollments;
-}
+};
 
 export default {
   Query: {
