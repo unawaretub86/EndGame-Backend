@@ -14,6 +14,7 @@ const projectType = gql`
     status: projectStatus
     phase: Phase
     leader: User
+    enrollments: [Enrollment]
   }
 `;
 
@@ -51,7 +52,7 @@ const queries = gql`
   }
 
   type Query {
-    projectByLeaderId(leader_id: ID!): [Project]!
+    projectByLeaderId: [Project]!
   }
 `;
 

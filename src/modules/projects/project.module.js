@@ -4,6 +4,7 @@ import projectSchema from "./project.schema.js";
 import projectResolver from "./project.resolver.js";
 import { PHASES, PROJECT_STATUS } from "./project.constants.js";
 import { Users, ROLES } from "../users/user.module.js";
+import { Enrollments } from '../enrollments/enrollment.module.js';
 
 export {
   Projects,
@@ -13,4 +14,5 @@ export {
   PROJECT_STATUS,
   ROLES,
   Users,
+  Enrollments,
 };
