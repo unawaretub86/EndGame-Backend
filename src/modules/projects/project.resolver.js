@@ -1,9 +1,11 @@
+import Enrollements from "../enrollments/enrollment.model.js";
 import {
   Projects,
   PROJECT_STATUS,
   PHASES,
   Users,
   ROLES,
+  Enrollments
 } from "./project.module.js";
 
 // eslint-disable-next-line no-unused-vars
@@ -40,7 +42,7 @@ const addProject = async (parent, args, { user, errorMessage }) => {
   let project = new Projects({
     ...args.input,
     leader_id: user._id,
-    status: PROJECT_STATUS.inactive
+    status: PROJECT_STATUS.inactive,
   });
   project = await project.save();
   return project;
@@ -53,6 +55,9 @@ const projectById = async (parent, args, { user, errorMessage }) => {
   //if (user.role != ROLES.admin) {
   //  throw new Error(`access denied`);
   //}
+  if (!project) {
+    throw new Error(`${errorMessage} project doesn't exists`);
+  }
   const project = await Projects.findById(args._id);
   return project;
 };
@@ -87,25 +92,38 @@ const leader = async (parent) => {
   return user;
 };
 
-const projectByPhase = async (parent, args) => {
-  const projects = await Projects.find({ phase: args.phase });
-  return projects;
+const projectByPhase = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    throw new Error(`${errorMessage} token error`);
+  }
+  if (!projectByPhase) {
+    throw new Error(`${errorMessage} project doesn't exists`);
+  }
+  const projectByPhase = await Projects.find({ phase: args.phase });
+  return projectByPhase;
 };
 
-const projectByStatus = async (parent, args) => {
-  const project = await Projects.find({ status: args.status });
-  return project;
+const projectByStatus = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    throw new Error(`${errorMessage} token error`);
+  }
+  if (!projectByStatus) {
+    throw new Error(`${errorMessage} project doesn't exists`);
+  }
+  const projectByStatus = await Projects.find({ status: args.status });
+  return projectByStatus;
 };
 
 // returns a project's list where user is leader of those
-const projectByLeaderId = async (parent, args) => {
-  const leader = await Users.findById(args.leader_id);
-
-  if (!leader) {
-    throw new Error("Leader does not exist");
+const projectByLeaderId = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    throw new Error(`${errorMessage} token error`);
+  }
+  if(user.role !== ROLES.leader){
+    throw new Error("Access denied")
   }
 
-  const projects = await Projects.find({ leader_id: leader._id });
+  const projects = await Projects.find({ leader_id: user._id });
 
   return projects;
 };
@@ -207,6 +225,11 @@ const inactivateProject = async (parent, args, { user, errorMessage }) => {
   return project;
 };
 
+const enrollments = async (parent, args) => {
+  let enrollments = await Enrollements.find({project_id: parent._id});
+  return enrollments;
+}
+
 export default {
   Query: {
     allProjects,
@@ -217,6 +240,7 @@ export default {
   },
   Project: {
     leader,
+    enrollments,
   },
   Mutation: {
     addProject,
