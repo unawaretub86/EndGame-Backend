@@ -109,7 +109,6 @@ const inputs = gql`
 
   input changePhaseInput {
     _id: ID!
-    Phase: Phase!
   }
 `;
 
