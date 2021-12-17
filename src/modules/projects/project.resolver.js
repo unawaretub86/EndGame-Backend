@@ -55,10 +55,11 @@ const projectById = async (parent, args, { user, errorMessage }) => {
   //if (user.role != ROLES.admin) {
   //  throw new Error(`access denied`);
   //}
+  const project = await Projects.findById(args._id);
+
   if (!project) {
     throw new Error(`${errorMessage} project doesn't exists`);
   }
-  const project = await Projects.findById(args._id);
   return project;
 };
 
