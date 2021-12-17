@@ -64,6 +64,13 @@ const projectById = async (parent, args, { user, errorMessage }) => {
   return project;
 };
 
+const projectsInStudent = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    throw new Error(`${errorMessage}`);
+  }
+  const projectInStudent = await Projects.findById;
+};
+
 //pending solve issue date in sandbox
 const updateProject = async (parent, args, { user, errorMessage }) => {
   let projectToUpdate = await Projects.findById(args.input.projectById);
@@ -149,11 +156,12 @@ const changePhaseProject = async (parent, args, { user, errorMessage }) => {
   if (user.role !== ROLES.admin) {
     throw new Error("Access denied");
   }
-  if (args.input.phase === "ended" && args.phase === "inProgress") {
+  if (args.phase === "inProgress") {
     let projectUpdated = await Projects.findOneAndUpdate(
       { _id: args.input._id },
       {
-        status: args.input.status,
+        phase: PHASES.inactive,
+        status: PROJECT_STATUS.ended,
         endDate: new Date(),
       },
       { new: true }
