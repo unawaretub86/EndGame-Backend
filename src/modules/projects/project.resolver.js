@@ -141,7 +141,7 @@ const projectByLeaderId = async (parent, args, { user, errorMessage }) => {
 };
 
 const changePhaseProject = async (parent, args, { user, errorMessage }) => {
-  let project = await Projects.findById(args._id);
+  let project = await Projects.findById(args.input._id);
 
   if (!project) {
     throw new Error("Project does not exist");
