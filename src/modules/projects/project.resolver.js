@@ -1,4 +1,3 @@
-import Enrollements from "../enrollments/enrollment.model.js";
 import {
   Projects,
   PROJECT_STATUS,
@@ -231,8 +230,8 @@ const inactivateProject = async (parent, args, { user, errorMessage }) => {
   return project;
 };
 
-const enrollments = async (parent, args) => {
-  let enrollments = await Enrollements.find({ project_id: parent._id });
+const enrollments = async (parent) => {
+  let enrollments = await Enrollments.find({ project_id: parent._id });
   return enrollments;
 };
 
