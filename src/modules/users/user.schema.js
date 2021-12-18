@@ -10,6 +10,7 @@ const userType = gql`
     lastName: String!
     status: userStatus!
     role: Role!
+    enrollments: [Enrollment]
   }
 `;
 
@@ -55,6 +56,10 @@ const queries = gql`
 
   type Query {
     userByStatus(status: userStatus!): [User]
+  }
+
+  type Query {
+    projectsStudentEnrolled: [Enrollment]
   }
 `;
 

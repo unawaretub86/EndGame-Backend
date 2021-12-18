@@ -3,6 +3,7 @@ import { Users } from "./user.module.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { USER_STATUS, ROLES } from "./user.module.js";
+import Enrollment from "../enrollments/enrollment.model.js";
 
 // function to finish about verify if userExists
 // const userExist = async (parent, args, { user, errorMessage }) => {
@@ -187,6 +188,21 @@ const updateStateLeader = async (parent, args, { user, errorMessage }) => {
   return userUpdatedByLeader;
 };
 
+const projectsStudentEnrolled = async (
+  parent,
+  args,
+  { user, errorMessage }
+) => {
+  if (!user) {
+    throw new Error(`${errorMessage} token error`);
+  }
+  let studentInProjects = await Enrollment.find({ user_id: user._id });
+  if (!studentInProjects) {
+    throw new Error(`${errorMessage} this student has no projects enrolled`);
+  }
+  return studentInProjects;
+};
+
 export default {
   Query: {
     allUsers,
@@ -194,6 +210,7 @@ export default {
     allStudents,
     usersByRole,
     userByStatus,
+    projectsStudentEnrolled,
   },
   Mutation: {
     login,

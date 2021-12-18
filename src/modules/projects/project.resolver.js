@@ -64,13 +64,6 @@ const projectById = async (parent, args, { user, errorMessage }) => {
   return project;
 };
 
-const projectsInStudent = async (parent, args, { user, errorMessage }) => {
-  if (!user) {
-    throw new Error(`${errorMessage}`);
-  }
-  const projectInStudent = await Projects.findById;
-};
-
 //pending solve issue date in sandbox
 const updateProject = async (parent, args, { user, errorMessage }) => {
   let projectToUpdate = await Projects.findById(args.input.projectById);
@@ -80,7 +73,7 @@ const updateProject = async (parent, args, { user, errorMessage }) => {
   if (!user) {
     throw new Error(`${errorMessage} token error`);
   }
-  if (user.role != ROLES.admin) {
+  if (user.role != ROLES.leader) {
     throw new Error(`access denied`);
   }
   const projectUpdated = await Projects.findOneAndUpdate(
