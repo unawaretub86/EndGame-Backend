@@ -3,7 +3,10 @@ import { Users } from "./user.module.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { USER_STATUS, ROLES } from "./user.module.js";
+
+//arreglar los import
 import Enrollment from "../enrollments/enrollment.model.js";
+import Projects from "../projects/project.model.js";
 
 // function to finish about verify if userExists
 // const userExist = async (parent, args, { user, errorMessage }) => {
@@ -200,7 +203,11 @@ const projectsStudentEnrolled = async (
   if (!studentInProjects) {
     throw new Error(`${errorMessage} this student has no projects enrolled`);
   }
-  return studentInProjects;
+  let idMapped = studentInProjects.map((e) => e.project_id);
+
+  let projects = await Projects.find({ _id: idMapped });
+
+  return projects;
 };
 
 export default {

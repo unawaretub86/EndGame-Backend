@@ -11,6 +11,7 @@ const userType = gql`
     status: userStatus!
     role: Role!
     enrollments: [Enrollment]
+    Project: [Project]
   }
 `;
 
@@ -59,7 +60,7 @@ const queries = gql`
   }
 
   type Query {
-    projectsStudentEnrolled: [Enrollment]
+    projectsStudentEnrolled: [Project]
   }
 `;
 
