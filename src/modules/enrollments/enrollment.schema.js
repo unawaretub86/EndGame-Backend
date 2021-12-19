@@ -11,6 +11,7 @@ const enrollmentType = gql`
     egressDate: String
     project: Project
     student: User
+    advances: [Advance]
   }
 `;
 
