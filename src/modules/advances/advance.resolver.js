@@ -1,9 +1,11 @@
 /* eslint-disable no-unused-vars */
 import {
     Advances, 
-    Enrollments
-} from "./advance.module.js"
-import { ROLES } from "../users/user.module.js";
+    Enrollments,
+    ROLES,
+    Projects,
+    PHASES,
+} from "./advance.module.js";
 
 
 // Queries Resolvers
@@ -50,6 +52,14 @@ const addAdvance = async (parent, args, { user, errorMessage }) => {
   if (user.role != ROLES.student) {
     throw new Error("Access denied");
   }
+  
+  let enrollment = await Enrollments.findById( args.input.enrollment_id );
+  await Projects.findOneAndUpdate(
+    { _id: enrollment.project_id },
+    { phase: PHASES.inProgress },
+    { new: true }
+  );
+
   let advance = new Advances({
     ...args.input,
   });
