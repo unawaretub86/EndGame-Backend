@@ -227,6 +227,17 @@ const inactivateProject = async (parent, args, { user, errorMessage }) => {
     { new: true }
   );
 
+  await Enrollments.updateMany(
+    {
+      project_id: project._id,
+      egressDate: null
+    },
+    {
+      egressDate: new Date(),
+    },
+    { new: true }
+  );
+
   return project;
 };
 
