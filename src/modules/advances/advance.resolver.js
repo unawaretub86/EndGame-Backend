@@ -3,7 +3,7 @@ import { Advances, Enrollments } from "./advance.module.js";
 import { ROLES } from "../users/user.module.js";
 import Projects from "../projects/project.model.js";
 
-// Queries Resolvers
+// Queries
 const allAdvances = async (parent, args, context, info) => {
   const advances = await Advances.find();
   return advances;
