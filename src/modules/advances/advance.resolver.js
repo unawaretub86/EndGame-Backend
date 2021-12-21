@@ -68,6 +68,25 @@ const addAdvance = async (parent, args, { user, errorMessage }) => {
 };
 
 
+const advancesByProjectId = async (parent, args, {user, errorMessage}) => {
+  if (!user) {
+    throw new Error(`${errorMessage} token error`);
+  }
+
+  let project = await Projects.findById(args._id);
+  if (!project) {
+    throw new Error("Project doesn't find");
+  }
+
+  let enrollments = await Enrollments.find({ project_id: project._id});
+
+  const enrollmentsId = enrollments.map((e) => e._id);
+  
+  let advances = await Advances.find({enrollment_id: enrollmentsId});
+
+  return advances;
+};
+
 const enrollment = async (parent, args, context, info) => {
     const enrollment = await Enrollments.findById(parent.enrollment_id);
     return enrollment;
@@ -76,11 +95,12 @@ const enrollment = async (parent, args, context, info) => {
 export default {
     Query: {
         allAdvances,
-        advaceById
+        advaceById,
+        advancesByProjectId,
     },
     Mutation: {
         addObservation,
-        addAdvance
+        addAdvance,
     },
     Advance: {
         enrollment

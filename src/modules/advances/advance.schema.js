@@ -28,6 +28,10 @@ const queries = gql`
   type Query {
     allAdvancesByStudentId: [Advance]
   }
+
+  type Query {
+    advancesByProjectId(_id: ID!): [Advance]
+  }
 `;
 
 const mutations = gql`
