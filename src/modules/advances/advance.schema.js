@@ -9,7 +9,8 @@ const advanceType = gql`
     description: String!
     leaderDate: String
     observations: String
-    enrollment: Enrollment
+    enrollment: [Enrollment]
+    project: [Project]
   }
 `;
 
@@ -26,7 +27,11 @@ const queries = gql`
 
   # Return all Advances By Student Id
   type Query {
-    allAdvancesByStudentId: [Advance]
+    allAdvancesByStudentId(_id: ID!): [Advance]
+  }
+
+  type Query {
+    allAdvancesByProject: [Advance]
   }
 `;
 
