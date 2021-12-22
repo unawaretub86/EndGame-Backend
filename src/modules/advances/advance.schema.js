@@ -9,7 +9,8 @@ const advanceType = gql`
     description: String!
     leaderDate: String
     observations: String
-    enrollment: Enrollment
+    enrollment: [Enrollment]
+    project: [Project]
   }
 `;
 
@@ -48,6 +49,11 @@ const mutations = gql`
   type Mutation {
     addObservation(input: AddObservationInput!): Advance!
   }
+
+  # update advance
+  type Mutation {
+    updateAdvance(input: updateAdvanceInput!): Advance!
+  }
 `;
 
 const inputs = gql`
@@ -59,6 +65,11 @@ const inputs = gql`
   input AddObservationInput {
     advaceById: ID!
     observations: String!
+  }
+
+  input updateAdvanceInput {
+    advaceById: ID!
+    description: String!
   }
 `;
 
