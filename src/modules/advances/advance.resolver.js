@@ -67,6 +67,26 @@ const addAdvance = async (parent, args, { user, errorMessage }) => {
   return advance;
 };
 
+const advancesByLeaderId = async (parent, args, { user, errorMessage}) => {
+  if(!user){
+    throw new Error(`${user} Token error`);
+  }
+  if(user.role != ROLES.leader){
+    throw new Error("Access denied");
+  }
+
+  let projects = await Projects.find({ leader_id: user._id });
+
+  const projectsId = projects.map((e) => e._id);
+
+  let enrollments = await Enrollments.find({ project_id: projectsId });
+
+  const enrollmentsId = enrollments.map((e) => e._id);
+  
+  let advances = await Advances.find({enrollment_id: enrollmentsId});
+
+  return advances;
+}
 
 const advancesByProjectId = async (parent, args, {user, errorMessage}) => {
   if (!user) {
@@ -97,6 +117,7 @@ export default {
         allAdvances,
         advaceById,
         advancesByProjectId,
+        advancesByLeaderId,
     },
     Mutation: {
         addObservation,
