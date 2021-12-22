@@ -53,7 +53,6 @@ const mutations = gql`
 const inputs = gql`
   input AddAdvanceInput {
     enrollment_id: ID!
-    addDate: String!
     description: String!
   }
 

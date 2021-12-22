@@ -59,7 +59,10 @@ const addAdvance = async (parent, args, { user, errorMessage }) => {
   let enrollment = await Enrollments.findById( args.input.enrollment_id );
   await Projects.findOneAndUpdate(
     { _id: enrollment.project_id },
-    { phase: PHASES.inProgress },
+    { 
+      phase: PHASES.inProgress,
+      addDate: new Date(),
+    },
     { new: true }
   );
 
