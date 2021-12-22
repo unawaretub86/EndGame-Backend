@@ -5,7 +5,7 @@ const advanceType = gql`
   type Advance {
     _id: ID!
     enrollment_id: ID!
-    addDate: String!
+    addDate: String
     description: String!
     leaderDate: String
     observations: String

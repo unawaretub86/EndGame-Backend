@@ -93,13 +93,13 @@ const addAdvance = async (parent, args, { user, errorMessage }) => {
     { _id: enrollment.project_id },
     {
       phase: PHASES.inProgress,
-      addDate: new Date(),
     },
     { new: true }
   );
 
   let advance = new Advances({
     ...args.input,
+    addDate: new Date(),
   });
   advance = await advance.save();
   return advance;
