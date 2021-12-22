@@ -26,7 +26,7 @@ const queries = gql`
 
   # Return all Advances By Student Id
   type Query {
-    allAdvancesByStudentId: [Advance]
+    advancesByStudentId: [Advance]
   }
 
   type Query {

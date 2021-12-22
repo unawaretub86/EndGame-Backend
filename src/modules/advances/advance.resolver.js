@@ -19,14 +19,21 @@ const advaceById = async (parent, args, context, info) => {
     return advance;
 };
 
-const allAdvancesByStudentId = async (parent, args, { user, errorMessage }) => {
+const advancesByStudentId = async (parent, args, { user, errorMessage }) => {
   if (!user) {
     throw new Error(`${errorMessage} token error`);
   }
-  if (user.role != ROLES.leader) {
+  if (user.role !== ROLES.student) {
     throw new Error("Access denied");
   }
-  return await Advances.find({});
+
+  let enrollments = await Enrollments.find({ user_id: user._id });
+
+  const enrollmentId = enrollments.map((e) => e._id);
+
+  let advances = await Advances.find({ enrollment_id: enrollmentId});
+
+  return advances;
 };
 
 // Mutations Resolvers
@@ -124,6 +131,7 @@ export default {
         advaceById,
         advancesByProjectId,
         advancesByLeaderId,
+        advancesByStudentId,
     },
     Mutation: {
         addObservation,
