@@ -4,6 +4,7 @@ import enrollmentSchema from "./enrollment.schema.js";
 import enrollmentResolver from "./enrollment.resolver.js";
 import STATUS from "./enrollment.constants.js";
 import { Projects } from "../projects/project.module.js";
+import { Advances } from "../advances/advance.module.js";
 import { ROLES, USER_STATUS, Users } from "../users/user.module.js"
 
 export  {
@@ -12,6 +13,7 @@ export  {
     enrollmentResolver,
     STATUS,
     Projects,
+    Advances,
     ROLES,
     USER_STATUS,
     Users,

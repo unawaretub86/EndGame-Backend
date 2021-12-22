@@ -15,12 +15,12 @@ const advancesSchema = new Schema({
     required: true,
   },
   leaderDate: {
-    bsonType: 'date'
+    type: Date,
   },
   observations: {
     type: String,
-  }
-})
+  },
+});
 
 const Advances = new mongoose.model('advances', advancesSchema);
 

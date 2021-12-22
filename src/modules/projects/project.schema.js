@@ -15,6 +15,7 @@ const projectType = gql`
     phase: Phase
     leader: User
     enrollments: [Enrollment]
+    advance: [Advance]
   }
 `;
 
@@ -109,7 +110,6 @@ const inputs = gql`
 
   input changePhaseInput {
     _id: ID!
-    Phase: Phase!
   }
 `;
 

@@ -4,6 +4,10 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { USER_STATUS, ROLES } from "./user.module.js";
 
+//arreglar los import
+import Enrollment from "../enrollments/enrollment.model.js";
+import Projects from "../projects/project.model.js";
+
 // function to finish about verify if userExists
 // const userExist = async (parent, args, { user, errorMessage }) => {
 //   if (!user) {
@@ -187,6 +191,25 @@ const updateStateLeader = async (parent, args, { user, errorMessage }) => {
   return userUpdatedByLeader;
 };
 
+const projectsStudentEnrolled = async (
+  parent,
+  args,
+  { user, errorMessage }
+) => {
+  if (!user) {
+    throw new Error(`${errorMessage} token error`);
+  }
+  let studentInProjects = await Enrollment.find({ user_id: user._id });
+  if (!studentInProjects) {
+    throw new Error(`${errorMessage} this student has no projects enrolled`);
+  }
+  let idMapped = studentInProjects.map((e) => e.project_id);
+
+  let projects = await Projects.find({ _id: idMapped });
+
+  return projects;
+};
+
 export default {
   Query: {
     allUsers,
@@ -194,6 +217,7 @@ export default {
     allStudents,
     usersByRole,
     userByStatus,
+    projectsStudentEnrolled,
   },
   Mutation: {
     login,

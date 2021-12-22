@@ -1,10 +1,10 @@
-import Enrollements from "../enrollments/enrollment.model.js";
 import {
   Projects,
   PROJECT_STATUS,
   PHASES,
   Users,
   ROLES,
+  // eslint-disable-next-line no-unused-vars
   Enrollments,
 } from "./project.module.js";
 
@@ -72,7 +72,7 @@ const updateProject = async (parent, args, { user, errorMessage }) => {
   if (!user) {
     throw new Error(`${errorMessage} token error`);
   }
-  if (user.role != ROLES.admin) {
+  if (user.role != ROLES.leader) {
     throw new Error(`access denied`);
   }
   const projectUpdated = await Projects.findOneAndUpdate(
@@ -133,12 +133,11 @@ const projectByLeaderId = async (parent, args, { user, errorMessage }) => {
 };
 
 const changePhaseProject = async (parent, args, { user, errorMessage }) => {
-  let project = await Projects.findById(args._id);
+  let project = await Projects.findById(args.input._id);
 
   if (!project) {
     throw new Error("Project does not exist");
   }
-
   if (project.phase === "ended") {
     throw new Error("Project ended");
   }
@@ -148,11 +147,13 @@ const changePhaseProject = async (parent, args, { user, errorMessage }) => {
   if (user.role !== ROLES.admin) {
     throw new Error("Access denied");
   }
-  if (args.input.phase === "ended" && args.phase === "inProgress") {
+
+  if (project.phase === "inProgress") {
     let projectUpdated = await Projects.findOneAndUpdate(
       { _id: args.input._id },
       {
-        status: args.input.status,
+        phase: PHASES.ended,
+        status: PROJECT_STATUS.inactive,
         endDate: new Date(),
       },
       { new: true }
@@ -226,11 +227,22 @@ const inactivateProject = async (parent, args, { user, errorMessage }) => {
     { new: true }
   );
 
+  await Enrollments.updateMany(
+    {
+      project_id: project._id,
+      egressDate: null
+    },
+    {
+      egressDate: new Date(),
+    },
+    { new: true }
+  );
+
   return project;
 };
 
-const enrollments = async (parent, args) => {
-  let enrollments = await Enrollements.find({ project_id: parent._id });
+const enrollments = async (parent) => {
+  let enrollments = await Enrollments.find({ project_id: parent._id });
   return enrollments;
 };
 
