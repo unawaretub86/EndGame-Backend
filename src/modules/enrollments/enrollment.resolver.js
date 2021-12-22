@@ -4,6 +4,7 @@ import {
   Enrollments,
   Projects,
   Users,
+  Advances,
   USER_STATUS,
   ROLES,
   STATUS,
@@ -92,6 +93,11 @@ const student = async (parent, args) => {
   return student;
 };
 
+const advances = async (parent) => {
+  let advances = await Advances.find({ enrollment_id: parent._id });
+  return advances;
+}
+
 export default {
   Query: {
     allEnrollments,
@@ -101,6 +107,7 @@ export default {
   Enrollment: {
     project,
     student,
+    advances,
   },
   Mutation: {
     changeStatusEnrollment,

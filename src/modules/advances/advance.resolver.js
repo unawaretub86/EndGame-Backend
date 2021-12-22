@@ -1,7 +1,11 @@
 /* eslint-disable no-unused-vars */
-import { Advances, Enrollments } from "./advance.module.js";
-import { ROLES } from "../users/user.module.js";
-import Projects from "../projects/project.model.js";
+import {
+    Advances, 
+    Enrollments,
+    ROLES,
+    Projects,
+    PHASES,
+} from "./advance.module.js";
 
 // Queries
 const allAdvances = async (parent, args, context, info) => {
@@ -65,6 +69,14 @@ const addAdvance = async (parent, args, { user, errorMessage }) => {
   if (user.role != ROLES.student) {
     throw new Error("Access denied");
   }
+  
+  let enrollment = await Enrollments.findById( args.input.enrollment_id );
+  await Projects.findOneAndUpdate(
+    { _id: enrollment.project_id },
+    { phase: PHASES.inProgress },
+    { new: true }
+  );
+
   let advance = new Advances({
     ...args.input,
   });
@@ -72,12 +84,36 @@ const addAdvance = async (parent, args, { user, errorMessage }) => {
   return advance;
 };
 
+<<<<<<< HEAD
+=======
+
+const advancesByProjectId = async (parent, args, {user, errorMessage}) => {
+  if (!user) {
+    throw new Error(`${errorMessage} token error`);
+  }
+
+  let project = await Projects.findById(args._id);
+  if (!project) {
+    throw new Error("Project doesn't find");
+  }
+
+  let enrollments = await Enrollments.find({ project_id: project._id});
+
+  const enrollmentsId = enrollments.map((e) => e._id);
+  
+  let advances = await Advances.find({enrollment_id: enrollmentsId});
+
+  return advances;
+};
+
+>>>>>>> cacbfd5fbcec2c8f47a2aca313c09db85144d930
 const enrollment = async (parent, args, context, info) => {
   const enrollment = await Enrollments.findById(parent.enrollment_id);
   return enrollment;
 };
 
 export default {
+<<<<<<< HEAD
   Query: {
     allAdvances,
     advaceById,
@@ -92,3 +128,18 @@ export default {
     enrollment,
   },
 };
+=======
+    Query: {
+        allAdvances,
+        advaceById,
+        advancesByProjectId,
+    },
+    Mutation: {
+        addObservation,
+        addAdvance,
+    },
+    Advance: {
+        enrollment
+    }
+}
+>>>>>>> cacbfd5fbcec2c8f47a2aca313c09db85144d930

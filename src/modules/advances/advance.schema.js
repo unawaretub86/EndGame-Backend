@@ -33,6 +33,10 @@ const queries = gql`
   type Query {
     allAdvancesByProject: [Advance]
   }
+
+  type Query {
+    advancesByProjectId(_id: ID!): [Advance]
+  }
 `;
 
 const mutations = gql`
