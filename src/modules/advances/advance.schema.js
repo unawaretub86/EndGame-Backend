@@ -37,6 +37,10 @@ const queries = gql`
   type Query {
     advancesByProjectId(_id: ID!): [Advance]
   }
+
+  type Query {
+    advancesByLeaderId: [Advance]
+  }
 `;
 
 const mutations = gql`
@@ -59,7 +63,6 @@ const mutations = gql`
 const inputs = gql`
   input AddAdvanceInput {
     enrollment_id: ID!
-    addDate: String!
     description: String!
   }
 
