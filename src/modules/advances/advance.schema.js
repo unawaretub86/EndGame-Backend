@@ -70,7 +70,7 @@ const inputs = gql`
 
   input updateAdvanceInput {
     advaceById: ID!
-    observations: String!
+    description: String!
   }
 `;
 

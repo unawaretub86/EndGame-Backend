@@ -108,13 +108,15 @@ const updateAdvance = async (parent, args, { user, errorMessage }) => {
     throw new Error(`${errorMessage} token error`);
   }
   let advanceUpdated = await Advances.findOneAndUpdate(
-    { _id: args.input._id },
+    { _id: args.input.advaceById },
     {
       description: args.input.description,
+      addDate: new Date(),
     },
     { new: true }
   );
-  return advanceUpdated;
+  console.log(advanceUpdated);
+  return await advanceUpdated;
 };
 
 const enrollment = async (parent, args, context, info) => {
@@ -127,10 +129,12 @@ export default {
     allAdvances,
     advaceById,
     advancesByProjectId,
+    allAdvancesByStudentId,
   },
   Mutation: {
     addObservation,
     addAdvance,
+    updateAdvance,
   },
   Advance: {
     enrollment,
