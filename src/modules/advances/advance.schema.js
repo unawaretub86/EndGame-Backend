@@ -9,7 +9,8 @@ const advanceType = gql`
     description: String!
     leaderDate: String
     observations: String
-    enrollment: Enrollment
+    enrollment: [Enrollment]
+    project: [Project]
   }
 `;
 
@@ -26,7 +27,11 @@ const queries = gql`
 
   # Return all Advances By Student Id
   type Query {
-    allAdvancesByStudentId: [Advance]
+    allAdvancesByStudentId(_id: ID!): [Advance]
+  }
+
+  type Query {
+    allAdvancesByProject: [Advance]
   }
 
   type Query {
@@ -48,6 +53,11 @@ const mutations = gql`
   type Mutation {
     addObservation(input: AddObservationInput!): Advance!
   }
+
+  # update advance
+  type Mutation {
+    updateAdvance(input: updateAdvanceInput!): Advance!
+  }
 `;
 
 const inputs = gql`
@@ -59,6 +69,11 @@ const inputs = gql`
   input AddObservationInput {
     advaceById: ID!
     observations: String!
+  }
+
+  input updateAdvanceInput {
+    advaceById: ID!
+    description: String!
   }
 `;
 
