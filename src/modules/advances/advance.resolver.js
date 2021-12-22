@@ -71,7 +71,7 @@ const addObservation = async (parent, args, { user, errorMessage }) => {
   }
   let advance = await Advances.findOneAndUpdate(
     { _id: args.input.advaceById },
-    { 
+    {
       observations: args.input.observations,
       leaderDate: new Date(),
     },
@@ -91,7 +91,7 @@ const addAdvance = async (parent, args, { user, errorMessage }) => {
   let enrollment = await Enrollments.findById(args.input.enrollment_id);
   await Projects.findOneAndUpdate(
     { _id: enrollment.project_id },
-    { 
+    {
       phase: PHASES.inProgress,
       addDate: new Date(),
     },
@@ -106,7 +106,6 @@ const addAdvance = async (parent, args, { user, errorMessage }) => {
 };
 
 const advancesByProjectId = async (parent, args, { user, errorMessage }) => {
-
   if (!user) {
     throw new Error(`${errorMessage} token error`);
   }
