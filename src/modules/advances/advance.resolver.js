@@ -39,7 +39,10 @@ const addObservation = async (parent, args, { user, errorMessage }) => {
   }
   let advance = await Advances.findOneAndUpdate(
     { _id: args.input.advaceById },
-    { observations: args.input.observations },
+    { 
+      observations: args.input.observations,
+      leaderDate: new Date(),
+    },
     { new: true }
   );
   return advance;
