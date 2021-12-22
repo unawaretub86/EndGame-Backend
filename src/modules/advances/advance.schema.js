@@ -9,7 +9,7 @@ const advanceType = gql`
     description: String!
     leaderDate: String
     observations: String
-    enrollment: [Enrollment]
+    enrollment: Enrollment
     project: [Project]
   }
 `;
