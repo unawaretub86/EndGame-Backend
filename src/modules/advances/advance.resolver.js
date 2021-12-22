@@ -115,7 +115,7 @@ const updateAdvance = async (parent, args, { user, errorMessage }) => {
     },
     { new: true }
   );
-  console.log(advanceUpdated);
+
   return await advanceUpdated;
 };
 
