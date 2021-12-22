@@ -49,6 +49,11 @@ const mutations = gql`
   type Mutation {
     addObservation(input: AddObservationInput!): Advance!
   }
+
+  # update advance
+  type Mutation {
+    updateAdvance(input: updateAdvanceInput!): Advance!
+  }
 `;
 
 const inputs = gql`
@@ -59,6 +64,11 @@ const inputs = gql`
   }
 
   input AddObservationInput {
+    advaceById: ID!
+    observations: String!
+  }
+
+  input updateAdvanceInput {
     advaceById: ID!
     observations: String!
   }

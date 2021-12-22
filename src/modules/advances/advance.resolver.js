@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
 import {
-    Advances, 
-    Enrollments,
-    ROLES,
-    Projects,
-    PHASES,
+  Advances,
+  Enrollments,
+  ROLES,
+  Projects,
+  PHASES,
 } from "./advance.module.js";
 
 // Queries
@@ -13,18 +13,18 @@ const allAdvances = async (parent, args, context, info) => {
   return advances;
 };
 
-const allAdvancesByProject = async (parent, args, { user, errorMessage }) => {
-  if (!user) {
-    throw new Error(`${errorMessage} token error`);
-  }
-  const advances = await Enrollments.find({ project_id: args._id });
+// const allAdvancesByProject = async (parent, args, { user, errorMessage }) => {
+//   if (!user) {
+//     throw new Error(`${errorMessage} token error`);
+//   }
+//   const advances = await Enrollments.find({ project_id: args._id });
 
-  console.log(advances);
+//   console.log(advances);
 
-  let projects = await Advances.find({});
+//   let projects = await Advances.find({});
 
-  return projects;
-};
+//   return projects;
+// };
 
 const advaceById = async (
   pareallAdvancesByStudentIdnt,
@@ -69,8 +69,8 @@ const addAdvance = async (parent, args, { user, errorMessage }) => {
   if (user.role != ROLES.student) {
     throw new Error("Access denied");
   }
-  
-  let enrollment = await Enrollments.findById( args.input.enrollment_id );
+
+  let enrollment = await Enrollments.findById(args.input.enrollment_id);
   await Projects.findOneAndUpdate(
     { _id: enrollment.project_id },
     { phase: PHASES.inProgress },
@@ -84,10 +84,7 @@ const addAdvance = async (parent, args, { user, errorMessage }) => {
   return advance;
 };
 
-<<<<<<< HEAD
-=======
-
-const advancesByProjectId = async (parent, args, {user, errorMessage}) => {
+const advancesByProjectId = async (parent, args, { user, errorMessage }) => {
   if (!user) {
     throw new Error(`${errorMessage} token error`);
   }
@@ -97,28 +94,39 @@ const advancesByProjectId = async (parent, args, {user, errorMessage}) => {
     throw new Error("Project doesn't find");
   }
 
-  let enrollments = await Enrollments.find({ project_id: project._id});
+  let enrollments = await Enrollments.find({ project_id: project._id });
 
   const enrollmentsId = enrollments.map((e) => e._id);
-  
-  let advances = await Advances.find({enrollment_id: enrollmentsId});
+
+  let advances = await Advances.find({ enrollment_id: enrollmentsId });
 
   return advances;
 };
 
->>>>>>> cacbfd5fbcec2c8f47a2aca313c09db85144d930
+const updateAdvance = async (parent, args, { user, errorMessage }) => {
+  if (!user) {
+    throw new Error(`${errorMessage} token error`);
+  }
+  let advanceUpdated = await Advances.findOneAndUpdate(
+    { _id: args.input._id },
+    {
+      description: args.input.description,
+    },
+    { new: true }
+  );
+  return advanceUpdated;
+};
+
 const enrollment = async (parent, args, context, info) => {
   const enrollment = await Enrollments.findById(parent.enrollment_id);
   return enrollment;
 };
 
 export default {
-<<<<<<< HEAD
   Query: {
     allAdvances,
     advaceById,
-    allAdvancesByStudentId,
-    allAdvancesByProject,
+    advancesByProjectId,
   },
   Mutation: {
     addObservation,
@@ -128,18 +136,3 @@ export default {
     enrollment,
   },
 };
-=======
-    Query: {
-        allAdvances,
-        advaceById,
-        advancesByProjectId,
-    },
-    Mutation: {
-        addObservation,
-        addAdvance,
-    },
-    Advance: {
-        enrollment
-    }
-}
->>>>>>> cacbfd5fbcec2c8f47a2aca313c09db85144d930
